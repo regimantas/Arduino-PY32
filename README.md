@@ -31,14 +31,8 @@ Example (Arduino IDE):
 1. Open Arduino IDE → File → Preferences.
 2. In "Additional Boards Manager URLs" paste:
    https://regsens.com/package_py32_index.json
-3. Open Tools → Board → Boards Manager, search for "PY32" and install the PY32Duino core.
+3. Open Tools → Board → Boards Manager, search for "Arduino PY32" and install the PY32Duino core.
 
-## Sponsorship
-
-To support the project (hardware, development boards, cloud services, etc.), we accept sponsorship. Sponsors help keep the project maintained and enable support for additional chips and boards.
-
-Sponsor link:
-- [Afdian](https://afdian.net/a/HalfSweet)
 
 ## License
 
