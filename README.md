@@ -1,27 +1,45 @@
 # PY32Duino
 
-PY32Duino 是一个由社区推动，旨在适配普冉半导体公司的 Arm-Cortex 系列 MCU 的 Arduino 框架。
+PY32Duino is a community-driven Arduino framework intended to support the Arm-Cortex series MCUs from PuRAN Semiconductor.
 
-## 文档与上手教程
+## Documentation & Getting Started
 
-可以直接查看 [PY32Duino 的官方文档](https://arduino.py32.halfsweet.cn/)，包括了接口资料与上手教程。
+You can view the official PY32Duino documentation, including API references and getting-started guides, at:  
+https://arduino.py32.halfsweet.cn/
 
-## 支持芯片
+## Supported MCUs
 
-目前我们支持的 MCU 如下：
+Currently we support the following MCUs:
 
-| MCU 系列  | 是否支持 |      详细链接       |
-| :-------: | :------: | :-----------------: |
-|  PY32F002A   |    🔨     |  |
-| PY32F003 |    🔨     |   |
-| PY32F030 |    🔨     |   |
+| MCU series   | Support status | Detailed link |
+| :----------: | :------------: | :-----------: |
+| PY32F002A    | 🔨 (in progress) |               |
+| PY32F003     | 🔨 (in progress) |               |
+| PY32F030     | 🔨 (in progress) |               |
 
-有关开发板的更多资料，请查看所述链接中的开发板内容。
+For more information about development boards, please check the board-specific pages in the documentation above.
 
-## 赞助方式
+## Arduino Boards Manager — Use this new core
 
-为了支持项目的发展，我们接受来自社区的赞助，赞助将用于维护发展并支付一些开支，例如适配新的芯片、购买开发板、云服务等。为了表示感谢，赞助者将拥有开发者专属快速通道，可以在第一时间获得技术支持。
+Do NOT use the old core board JSON. Please add the following Package Index URL to your Arduino IDE (Preferences → Additional Boards Manager URLs) or to your platform configuration:
 
-赞助方式如下：
+https://regsens.com/package_py32_index.json
 
-- [爱发电](https://afdian.net/a/HalfSweet)
+This is the new Arduino Core package index for PY32Duino and must be used instead of any previous/old board JSON files.
+
+Example (Arduino IDE):
+1. Open Arduino IDE → File → Preferences.
+2. In "Additional Boards Manager URLs" paste:
+   https://regsens.com/package_py32_index.json
+3. Open Tools → Board → Boards Manager, search for "PY32" and install the PY32Duino core.
+
+## Sponsorship
+
+To support the project (hardware, development boards, cloud services, etc.), we accept sponsorship. Sponsors help keep the project maintained and enable support for additional chips and boards.
+
+Sponsor link:
+- [Afdian](https://afdian.net/a/HalfSweet)
+
+## License
+
+(Include your project license here — e.g., MIT, Apache-2.0 — if applicable.)
