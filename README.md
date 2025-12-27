@@ -1,11 +1,10 @@
 # PY32Duino
 
-PY32Duino is a community-driven Arduino framework intended to support the Arm-Cortex series MCUs from PuRAN Semiconductor.
+PY32Duino is a community-driven Arduino framework intended to support the Arm-Cortex series MCUs from Puya Semiconductor.
 
 ## Documentation & Getting Started
 
-You can view the official PY32Duino documentation, including API references and getting-started guides, at:  
-https://arduino.py32.halfsweet.cn/
+You can view the official PY32Duino.
 
 ## Supported MCUs
 
