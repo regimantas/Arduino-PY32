@@ -1,0 +1,28 @@
+# Local/dev environment
+.venv/
+__pycache__/
+*.py[cod]
+
+# VS Code (keep workspace settings? choose what you want)
+.vscode/
+
+# Build / test artifacts created locally
+_build_cli/
+_build_sanity/
+_build_test/
+_cli_config/
+
+# Release / packaging outputs
+_release_out/
+dist/
+
+# Temporary unpack/verification folders
+_tmp_unpack_*/
+
+# Local sketches / scratch areas
+_sketchbook/
+_sketches/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db

@@ -1,0 +1,4 @@
+PY32LowPower    KEYWORD1
+begin           KEYWORD2
+deepSleep       KEYWORD2
+exitSleep       KEYWORD2
