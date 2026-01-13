@@ -58,6 +58,16 @@ This core can be used with a variety of programming/debug adapters and tools (de
 
 > Tip: the exact upload method can vary per board/variant. If one tool doesn’t fit your hardware, you can typically switch to another programmer without changing your sketches.
 
+### Host OS support
+
+The bundled tooling in this core is provided for:
+
+- Windows (x64)
+- Linux (x64)
+- Linux (ARM64 / aarch64)
+
+Linux ARM (32-bit / `arm-linux-gnueabihf`) support is planned in the near future.
+
 ## PF2 (NRST) as GPIO + Restore to RESET
 
 On some supported PY32 parts, **PF2 is multiplexed with NRST** (reset). PY32Duino provides a convenient runtime way to switch this using `pinMode()`.
