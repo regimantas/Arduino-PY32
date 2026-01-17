@@ -35,6 +35,19 @@
 
 #include "wiring.h"
 
+#ifdef __cplusplus
+  #include "WString.h"
+  #include "HardwareSerial.h"
+  #include "Tone.h"
+  #include "WSerial.h"
+  #include "Comparator.h"
+
+  // Convenience frequency literals for sketches.
+  // Example: 250_kHz, 1_MHz
+  constexpr unsigned long long operator""_kHz(unsigned long long v) { return v * 1000ULL; }
+  constexpr unsigned long long operator""_MHz(unsigned long long v) { return v * 1000000ULL; }
+#endif
+
 /* sketch */
 
 #ifdef __cplusplus

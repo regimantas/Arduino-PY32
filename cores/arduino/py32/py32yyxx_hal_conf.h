@@ -30,6 +30,12 @@
   #undef HAL_ADC_MODULE_ENABLED
 #endif
 
+#if !defined(HAL_COMP_MODULE_DISABLED)
+  #define HAL_COMP_MODULE_ENABLED
+#else
+  #undef HAL_COMP_MODULE_ENABLED
+#endif
+
 #if !defined(HAL_I2C_MODULE_DISABLED)
   #define HAL_I2C_MODULE_ENABLED
 #else

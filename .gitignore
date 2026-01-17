@@ -12,6 +12,12 @@ _build_sanity/
 _build_test/
 _cli_config/
 
+# Arduino CLI cache/data (local)
+_cli_data/
+
+# Local hardware override used for testing (Sketchbook hardware/)
+_local_hardware/
+
 # Release / packaging outputs
 _release_out/
 dist/
@@ -23,6 +29,24 @@ _tmp_unpack_*/
 _sketchbook/
 _sketches/
 
+# Arduino build artifacts
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.o
+*.a
+*.d
+*.d.*
+*.su
+*.srec
+
 # OS / editor noise
 .DS_Store
 Thumbs.db
+
+# Backup files
+*.bak
+*.bak_*
+*.bak.*
