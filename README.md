@@ -271,6 +271,33 @@ pinMode(PF2, NRST);
 
 After restoring NRST mode, PF2 is no longer available as a normal GPIO pin.
 
+### Check current NRST mode (`isReset()`)
+
+You can read the current NRST/PF2 mode (from the option bytes) without changing anything:
+
+- `isReset() == true` → NRST is in **RESET** mode (normal reset pin)
+- `isReset() == false` → NRST is in **GPIO** mode (PF2 can be used as a digital pin)
+
+Example:
+
+```cpp
+void setup() {
+   Serial.begin(115200);
+   Serial.println(isReset() ? "NRST=RESET" : "NRST=GPIO");
+
+   // Optional: restore reset pin if you detect GPIO mode
+   // if (!isReset()) {
+   //   pinMode(PF2, NRST);
+   // }
+}
+
+void loop() {}
+```
+
+Notes:
+- `isReset()` only *reads* the current configuration; it does not trigger an option-byte launch/reset.
+- On unsupported variants (no NRST mode bit exposed), it returns `true`.
+
 
 ## License
 

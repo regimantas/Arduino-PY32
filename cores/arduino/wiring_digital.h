@@ -19,6 +19,8 @@
 #ifndef _WIRING_DIGITAL_
 #define _WIRING_DIGITAL_
 
+#include <stdbool.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -57,6 +59,14 @@ extern int digitalRead(uint32_t ulPin) ;
  * \param ulPin The number of the digital pin you want to toggle (int)
  */
 extern void digitalToggle(uint32_t ulPin) ;
+
+/**
+ * \brief Returns the current NRST mode (PF2 multiplexing).
+ *
+ * \return true when NRST is in reset mode (PF2 behaves as reset),
+ *         false when NRST is configured as GPIO.
+ */
+extern bool isReset(void);
 
 #ifdef __cplusplus
 }

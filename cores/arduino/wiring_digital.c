@@ -30,6 +30,17 @@ extern "C" {
 
 extern uint32_t g_anOutputPinConfigured[MAX_NB_PORT];
 
+bool isReset(void)
+{
+#if (defined(PY32F002APRE) || defined(PY32F003PRE)) && defined(FLASH_OPTR_NRST_MODE)
+  // NRST_MODE==1 means PF2 is GPIO; NRST_MODE==0 means PF2 is reset.
+  return ((FLASH->OPTR & FLASH_OPTR_NRST_MODE) == 0U);
+#else
+  // On unsupported MCUs/variants, treat as reset mode.
+  return true;
+#endif
+}
+
 #if (defined(PY32F002APRE) || defined(PY32F003PRE)) && defined(FLASH_OPTR_NRST_MODE)
 static void py32_pf2_set_nrst_as_gpio(bool enableGpio)
 {

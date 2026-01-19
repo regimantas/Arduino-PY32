@@ -60,6 +60,11 @@ extern void initVariant() __attribute__((weak));
 extern void setup(void) ;
 extern void loop(void) ;
 
+// Returns true when the NRST/PF2 option byte selects reset mode.
+// Returns false when NRST is configured as GPIO.
+// On unsupported MCUs/variants, returns true.
+bool isReset(void);
+
 void yield(void);
 #ifdef __cplusplus
 } // extern "C"
