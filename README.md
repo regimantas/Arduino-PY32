@@ -155,6 +155,23 @@ Notes:
 `void duty(permille)`
 - Sets PWM duty in 0..1000 (1000 = 100%)
 
+`uint32_t pwmTop()`
+- Returns current timer period (ARR). One PWM cycle has `(ARR + 1)` steps.
+- Use this to know the *real* duty resolution for the configured PWM frequency.
+
+`void dutyRaw(compareCounts)`
+- Fast duty update (direct write to `TIMx->CCRy`).
+- `compareCounts` is clamped to `0..pwmTop()`.
+- Intended for very fast updates (tight loops / ISR), after `pwm()` is started.
+
+Example (convert permille → raw counts):
+
+```cpp
+uint32_t top = comp1.pwmTop();      // ARR
+uint32_t ccr = (top * 250u) / 1000u; // 25%
+comp1.dutyRaw(ccr);
+```
+
 **Notes / limitations**
 - No extra "enable" is required in sketches. COMP is enabled by default in this core; it will only be unavailable if comparator support is disabled at build time.
 - `attachInterrupt()` enables the shared `ADC_COMP_IRQn` NVIC interrupt (ADC/COMP share the IRQ on PY32F0xx).

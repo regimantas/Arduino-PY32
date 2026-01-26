@@ -495,6 +495,43 @@ void Comparator::duty(uint16_t permille)
 
   pwmTimer_->setCaptureCompare(pwmChannel_, dutyPermilleTo10bit(pwmDutyPermille_), RESOLUTION_10B_COMPARE_FORMAT);
 }
+
+uint32_t Comparator::pwmTop() const
+{
+  if (!pwmTimer_) return 0;
+  TIM_HandleTypeDef* htim = pwmTimer_->getHandle();
+  if (htim == nullptr || htim->Instance == nullptr) return 0;
+  return (uint32_t)(htim->Instance->ARR);
+}
+
+void Comparator::dutyRaw(uint32_t compareCounts)
+{
+  if (!pwmTimer_ || pwmChannel_ < 1 || pwmChannel_ > 4) return;
+
+  TIM_HandleTypeDef* htim = pwmTimer_->getHandle();
+  if (htim == nullptr || htim->Instance == nullptr) return;
+
+  TIM_TypeDef* tim = htim->Instance;
+  uint32_t top = (uint32_t)tim->ARR;
+  if (compareCounts > top) compareCounts = top;
+
+  switch (pwmChannel_) {
+    case 1:
+      tim->CCR1 = (uint32_t)compareCounts;
+      break;
+    case 2:
+      tim->CCR2 = (uint32_t)compareCounts;
+      break;
+    case 3:
+      tim->CCR3 = (uint32_t)compareCounts;
+      break;
+    case 4:
+      tim->CCR4 = (uint32_t)compareCounts;
+      break;
+    default:
+      break;
+  }
+}
 #endif
 
 bool Comparator::read()

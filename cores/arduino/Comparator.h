@@ -123,6 +123,19 @@ public:
   // Set PWM duty in permille: 0..1000 (1000 = 100%).
   // Can be called before pwm(); value is latched and applied when PWM starts.
   void duty(uint16_t permille);
+
+  // --- Fast / raw PWM duty control (direct timer registers) ---
+  // These helpers are intended for high-rate duty updates.
+  // They only work after pwm() has successfully started.
+
+  // Returns the current timer period (ARR). One full PWM cycle has (ARR + 1) steps.
+  // If PWM is not started, returns 0.
+  uint32_t pwmTop() const;
+
+  // Fast duty update: writes directly to TIMx->CCRy.
+  // compareCounts is clamped to 0..pwmTop().
+  // If PWM is not started, does nothing.
+  void dutyRaw(uint32_t compareCounts);
 #endif
 
   // Returns true when comparator output is high.
