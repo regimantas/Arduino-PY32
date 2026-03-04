@@ -521,3 +521,141 @@ GenF002A.menu.pnum.PY32F002Ax5.upload.maximum_data_size=3072
 GenF002A.menu.pnum.PY32F002Ax5.build.board=PY32F002Ax5
 GenF002A.menu.pnum.PY32F002Ax5.build.product_line=PY32F002Ax5
 GenF002A.menu.pnum.PY32F002Ax5.build.variant=PY32F002Axx/PY32F002A_Base
+
+###############################
+# Generic PY32F002B Series
+###############################
+
+GenF002B.name=Generic PY32F002B Series
+
+GenF002B.upload.maximum_size=0
+GenF002B.upload.maximum_data_size=0
+
+GenF002B.upload.tool=ArduinoPY32Flasher
+GenF002B.upload.tool.default=ArduinoPY32Flasher
+
+GenF002B.menu.upload_method.flasher=ArduinoPY32Flasher (Windows/Linux)
+GenF002B.menu.upload_method.flasher.upload.tool=ArduinoPY32Flasher
+GenF002B.menu.upload_method.flasher.upload.tool.default=ArduinoPY32Flasher
+GenF002B.menu.upload_method.airisp=AirISP (serial)
+GenF002B.menu.upload_method.airisp.upload.tool=AirISP
+GenF002B.menu.upload_method.airisp.upload.tool.default=AirISP
+
+GenF002B.build.core=arduino
+GenF002B.build.board=GenF002B
+GenF002B.build.mcu=cortex-m0plus
+GenF002B.build.series=PY32F0xx
+GenF002B.build.cmsis_lib_gcc=arm_cortexM0l_math
+GenF002B.build.py_extra_flags=-D{build.product_line} {build.enable_usb} {build.xSerial}
+GenF002B.build.drivers_include="-I{build.system.path}/Arduino-PY32F0xx-Drivers/{build.series}_HAL_Driver/Inc" "-I{build.system.path}/Arduino-PY32F0xx-Drivers/{build.series}_HAL_Driver/Src" "-I{build.system.path}/{build.series}" "-I{build.system.path}/Arduino-PY32F0xx-Drivers/CMSIS/Device/{build.series}/Include/" "-I{build.system.path}/Arduino-PY32F0xx-Drivers/CMSIS/Device/{build.series}/Source/gcc/" 
+
+GenF002B.menu.UploadSpeed.115200=115200
+GenF002B.menu.UploadSpeed.115200.upload.speed=115200
+GenF002B.menu.UploadSpeed.57600=57600
+GenF002B.menu.UploadSpeed.57600.upload.speed=57600
+GenF002B.menu.UploadSpeed.38400=38400
+GenF002B.menu.UploadSpeed.38400.upload.speed=38400
+GenF002B.menu.UploadSpeed.19200=19200
+GenF002B.menu.UploadSpeed.19200.upload.speed=19200
+GenF002B.menu.UploadSpeed.9600=9600
+GenF002B.menu.UploadSpeed.9600.upload.speed=9600
+GenF002B.menu.UploadSpeed.4800=4800
+GenF002B.menu.UploadSpeed.4800.upload.speed=4800
+GenF002B.menu.UploadSpeed.2400=2400
+GenF002B.menu.UploadSpeed.2400.upload.speed=2400
+GenF002B.menu.UploadSpeed.1200=1200
+GenF002B.menu.UploadSpeed.1200.upload.speed=1200
+
+# HSI/HSE选择和主频
+GenF002B.menu.ClockSourceAndFrequency.HSI8M_HCLK8M=HSI 8Mhz, HCLK 8Mhz
+GenF002B.menu.ClockSourceAndFrequency.HSI8M_HCLK8M.build.temp=-D{build.series}_HSI_8M_HCLK_8M
+GenF002B.menu.ClockSourceAndFrequency.HSI8M_HCLK8M.build.f_cpu=8000000L
+
+GenF002B.menu.ClockSourceAndFrequency.HSI24M_HCLK24M=HSI 24Mhz, HCLK 24Mhz
+GenF002B.menu.ClockSourceAndFrequency.HSI24M_HCLK24M.build.temp=-D{build.series}_HSI_24M_HCLK_24M
+GenF002B.menu.ClockSourceAndFrequency.HSI24M_HCLK24M.build.f_cpu=24000000L
+
+GenF002B.menu.ClockSourceAndFrequency.HSE8M_HCLK8M=HSE 8Mhz, HCLK 8Mhz
+GenF002B.menu.ClockSourceAndFrequency.HSE8M_HCLK8M.build.temp=-D{build.series}_HSE_8M_HCLK_8M
+GenF002B.menu.ClockSourceAndFrequency.HSE8M_HCLK8M.build.f_cpu=8000000L
+
+GenF002B.menu.ClockSourceAndFrequency.HSE16M_HCLK16M=HSE 16Mhz, HCLK 16Mhz
+GenF002B.menu.ClockSourceAndFrequency.HSE16M_HCLK16M.build.temp=-D{build.series}_HSE_16M_HCLK_16M
+GenF002B.menu.ClockSourceAndFrequency.HSE16M_HCLK16M.build.f_cpu=16000000L
+
+GenF002B.menu.ClockSourceAndFrequency.HSE24M_HCLK24M=HSE 24Mhz, HCLK 24Mhz
+GenF002B.menu.ClockSourceAndFrequency.HSE24M_HCLK24M.build.temp=-D{build.series}_HSE_24M_HCLK_24M
+GenF002B.menu.ClockSourceAndFrequency.HSE24M_HCLK24M.build.f_cpu=24000000L
+
+GenF002B.menu.LowSpeedClockSource.LSI=LSI 32.768Khz
+GenF002B.menu.LowSpeedClockSource.LSI.build.lsc_temp=-D{build.series}_LSC_LSI
+
+GenF002B.menu.LowSpeedClockSource.LSE=LSE 32.768Khz
+GenF002B.menu.LowSpeedClockSource.LSE.build.lsc_temp=-D{build.series}_LSC_LSE
+
+GenF002B.menu.LowSpeedClockSource.None=None
+GenF002B.menu.LowSpeedClockSource.None.build.lsc_temp=-D{build.series}_LSC_NONE
+
+GenF002B.menu.xserial.generic=Enabled (generic 'Serial')
+GenF002B.menu.xserial.none=Enabled (no generic 'Serial')
+GenF002B.menu.xserial.none.build.xSerial=-DHAL_UART_MODULE_ENABLED -DHWSERIAL_NONE
+GenF002B.menu.xserial.disabled=Disabled (no Serial support)
+GenF002B.menu.xserial.disabled.build.xSerial=
+
+# debug
+GenF002B.menu.dbg.none=None
+GenF002B.menu.dbg.enable_sym=Symbols Enabled (-g)
+GenF002B.menu.dbg.enable_sym.build.flags.debug=-g -DNDEBUG
+GenF002B.menu.dbg.enable_log=Core logs Enabled
+GenF002B.menu.dbg.enable_log.build.flags.debug=
+GenF002B.menu.dbg.enable_all=Core Logs and Symbols Enabled (-g)
+GenF002B.menu.dbg.enable_all.build.flags.debug=-g
+
+# optimize
+GenF002B.menu.opt.osstd=Smallest (-Os default)
+GenF002B.menu.opt.oslto=Smallest (-Os) with LTO
+GenF002B.menu.opt.oslto.build.flags.optimize=-Os -flto
+GenF002B.menu.opt.o1std=Fast (-O1)
+GenF002B.menu.opt.o1std.build.flags.optimize=-O1
+GenF002B.menu.opt.o1lto=Fast (-O1) with LTO
+GenF002B.menu.opt.o1lto.build.flags.optimize=-O1 -flto
+GenF002B.menu.opt.o2std=Faster (-O2)
+GenF002B.menu.opt.o2std.build.flags.optimize=-O2
+GenF002B.menu.opt.o2lto=Faster (-O2) with LTO
+GenF002B.menu.opt.o2lto.build.flags.optimize=-O2 -flto
+GenF002B.menu.opt.o3std=Fastest (-O3)
+GenF002B.menu.opt.o3std.build.flags.optimize=-O3
+GenF002B.menu.opt.o3lto=Fastest (-O3) with LTO
+GenF002B.menu.opt.o3lto.build.flags.optimize=-O3 -flto
+GenF002B.menu.opt.ogstd=Debug (-Og)
+GenF002B.menu.opt.ogstd.build.flags.optimize=-Og
+GenF002B.menu.opt.o0std=No Optimization (-O0)
+GenF002B.menu.opt.o0std.build.flags.optimize=-O0
+
+GenF002B.menu.SupplyVoltage.3V3=3.3V
+GenF002B.menu.SupplyVoltage.3V3.build.sv_tmp=-DVDD_3V3
+GenF002B.menu.SupplyVoltage.1V8=1.8V
+GenF002B.menu.SupplyVoltage.3V3.build.sv_tmp=-DVDD_1V8
+GenF002B.menu.SupplyVoltage.2V5=2.5V
+GenF002B.menu.SupplyVoltage.3V3.build.sv_tmp=-DVDD_2V5
+GenF002B.menu.SupplyVoltage.2V8=2.8V
+GenF002B.menu.SupplyVoltage.3V3.build.sv_tmp=-DVDD_2V8
+GenF002B.menu.SupplyVoltage.3V8=3.8V
+GenF002B.menu.SupplyVoltage.3V3.build.sv_tmp=-DVDD_3V8
+GenF002B.menu.SupplyVoltage.5V=5V
+GenF002B.menu.SupplyVoltage.5V.build.sv_tmp=-DVDD_5V
+
+# boot
+GenF002B.menu.BootConnection.defaule=default isp circuit
+GenF002B.menu.BootConnection.defaule.upload.boot=default_reset
+GenF002B.menu.BootConnection.direct=direct connect
+GenF002B.menu.BootConnection.direct.upload.boot=direct_connect
+
+GenF002B.build.extra_flags={build.temp} -DF_CPU={build.f_cpu} {build.lsc_temp} {build.sv_tmp}
+
+GenF002B.menu.pnum.PY32F002Bx5=PY32F002Bx5
+GenF002B.menu.pnum.PY32F002Bx5.upload.maximum_size=24576
+GenF002B.menu.pnum.PY32F002Bx5.upload.maximum_data_size=3072
+GenF002B.menu.pnum.PY32F002Bx5.build.board=PY32F002Bx5
+GenF002B.menu.pnum.PY32F002Bx5.build.product_line=PY32F002Bx5
+GenF002B.menu.pnum.PY32F002Bx5.build.variant=PY32F002Axx/PY32F002A_Base

@@ -115,7 +115,6 @@ struct i2c_s {
   IRQn_Type irqER;
 #endif /* !AIRC0xx && !PY32F0xx && !AIRG0xx && !AIRL0xx */
   volatile int slaveRxNbData; // Number of accumulated bytes received in Slave mode
-  volatile uint8_t slaveTxIdx; // Current TX index in Slave mode
   void (*i2c_onSlaveReceive)(i2c_t *);
   void (*i2c_onSlaveTransmit)(i2c_t *);
   volatile uint8_t i2cTxRxBuffer[I2C_TXRX_BUFFER_SIZE];

@@ -53,7 +53,7 @@ extern "C" {
 #define PY32F003PRE
 #elif (defined(PY32F072xB))
 #define PY32F072PRE
-#elif (defined(PY32F002Ax5))
+#elif (defined(PY32F002Ax5) || defined(PY32F002Bx5))
 #define PY32F002APRE
 #endif
 
@@ -64,7 +64,7 @@ extern "C" {
 #if !defined (PY32F030x3) && !defined (PY32F030x4) && !defined (PY32F030x6) && !defined (PY32F030x7) && !defined (PY32F030x8) && !defined (PY32F030xx) && \
     !defined (PY32F003x4) && !defined (PY32F003x6) && !defined (PY32F003x8) && \
     !defined (PY32F072xB) && \
-    !defined (PY32F002Ax5)
+  !defined (PY32F002Ax5) && !defined (PY32F002Bx5)
 /* #define PY32F030x3  */  /*!< PY32F030x3  Devices (PY32F030xx  microcontrollers where the Flash memory is 8 Kbytes)               */
 /* #define PY32F030x4  */  /*!< PY32F030x4  Devices (PY32F030xx  microcontrollers where the Flash memory is 16 Kbytes)              */
 /* #define PY32F030x6  */  /*!< PY32F030x6  Devices (PY32F030xx  microcontrollers where the Flash memory is 32 Kbytes)              */
@@ -75,6 +75,7 @@ extern "C" {
 /* #define PY32F003x8  */  /*!< PY32F003x8  Devices (PY32F003xx  microcontrollers where the Flash memory is 64 Kbytes)              */
 /* #define PY32F072xB  */  /*!< PY32F072xB  Devices (PY32F072xx  microcontrollers where the Flash memory is 128 Kbytes)             */
 /* #define PY32F002Ax5 */  /*!< PY32F002Ax5 Devices (PY32F002Ax5 microcontrollers where the Flash memory is 20 Kbytes)              */
+/* #define PY32F002Bx5 */  /*!< PY32F002Bx5 Devices (PY32F002Bx5 microcontrollers where the Flash memory is 32 Kbytes)              */
 #endif
 
 /*  Tip: To avoid modifying this file each time you need to switch between these
@@ -129,6 +130,8 @@ extern "C" {
 #include "py32f072xB.h"
 #elif defined(PY32F002Ax5)
 #include "py32f002ax5.h"
+#elif defined(PY32F002Bx5)
+#include "py32f002bx5.h"
 #else
 #error "Please select first the target PY32F0xx device used in your application (in py32f0xx.h file)"
 #endif

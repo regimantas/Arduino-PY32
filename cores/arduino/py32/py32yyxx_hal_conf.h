@@ -6,7 +6,7 @@
  */
 #define HAL_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
-#if !defined (PY32F002Ax5)
+#if !defined (PY32F002Ax5) && !defined (PY32F002Bx5)
 #define HAL_DMA_MODULE_ENABLED /* Required by other modules */
 #endif
 #define HAL_FLASH_MODULE_ENABLED
@@ -48,7 +48,7 @@
   #undef HAL_I2S_MODULE_ENABLED
 #endif
 
-#if !defined(HAL_RTC_MODULE_DISABLED) && !defined (PY32F002Ax5)
+#if !defined(HAL_RTC_MODULE_DISABLED) && !defined (PY32F002Ax5) && !defined (PY32F002Bx5)
   #define HAL_RTC_MODULE_ENABLED
 #else
   #undef HAL_RTC_MODULE_ENABLED

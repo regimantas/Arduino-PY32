@@ -53,157 +53,6 @@ extern "C" {
 #define SLAVE_MODE_RECEIVE      1
 #define SLAVE_MODE_LISTEN       2
 
-#if defined(PY32F0xx)
-static uint8_t py32_pin_is_port_pin(PinName pin, uint8_t port_index, uint8_t pin_index)
-{
-  /*
-   * PinName encoding differs per core. Support two common encodings:
-   *  (1) 8-bit:  bits[3:0]=pin, bits[7:4]=port  (e.g. PA0=0x00, PF1=0x51)
-   *  (2) 16-bit: bits[3:0]=pin, bits[11:8]=port (e.g. PF0=0x0500, PF1=0x0501)
-   */
-  uint32_t raw = (uint32_t)pin;
-
-  if ((raw & 0xFFFFFF00UL) == 0UL) {
-    return ((((raw >> 4) & 0x0FUL) == (uint32_t)port_index) && ((raw & 0x0FUL) == (uint32_t)pin_index)) ? 1U : 0U;
-  }
-
-  if ((raw & 0xFFFF0000UL) == 0UL) {
-    return ((((raw >> 8) & 0x0FUL) == (uint32_t)port_index) && ((raw & 0x0FUL) == (uint32_t)pin_index)) ? 1U : 0U;
-  }
-
-  return 0U;
-}
-
-static void py32_try_i2c1_remap_pf01(i2c_t *obj)
-{
-  if ((obj == NULL) || (obj->i2c == NULL)) {
-    return;
-  }
-
-  /* Only I2C1 has the common PF0/PF1 remap on PY32F0xx families. */
-  if (obj->i2c != I2C1) {
-    return;
-  }
-
-  /* Port F index is commonly 5 (A=0, B=1, ... F=5) in 8-bit PinName encoding. */
-  const uint8_t PORT_F = 5;
-  if (!py32_pin_is_port_pin(obj->sda, PORT_F, 0) ||
-      !py32_pin_is_port_pin(obj->scl, PORT_F, 1)) {
-    return;
-  }
-
-  /* Enable SYSCFG clock if required, then enable the I2C1 remap bit. */
-#if defined(__HAL_RCC_SYSCFG_CLK_ENABLE)
-  __HAL_RCC_SYSCFG_CLK_ENABLE();
-#endif
-
-#if defined(SYSCFG) && defined(SYSCFG_CFGR1_I2C1_RMP)
-  SYSCFG->CFGR1 |= SYSCFG_CFGR1_I2C1_RMP;
-#elif defined(SYSCFG) && defined(SYSCFG_CFGR1_I2C_RMP)
-  SYSCFG->CFGR1 |= SYSCFG_CFGR1_I2C_RMP;
-#endif
-}
-
-static void i2c_slave_irq_py32(i2c_t *obj)
-{
-  if (obj == NULL || obj->i2c == NULL) {
-    return;
-  }
-
-  I2C_TypeDef *i2c = obj->i2c;
-  uint32_t sr1 = i2c->SR1;
-
-  /* Handle and clear errors early */
-  if ((sr1 & I2C_SR1_BERR) == I2C_SR1_BERR) {
-    CLEAR_BIT(i2c->SR1, I2C_SR1_BERR);
-  }
-  if ((sr1 & I2C_SR1_ARLO) == I2C_SR1_ARLO) {
-    CLEAR_BIT(i2c->SR1, I2C_SR1_ARLO);
-  }
-  if ((sr1 & I2C_SR1_OVR) == I2C_SR1_OVR) {
-    CLEAR_BIT(i2c->SR1, I2C_SR1_OVR);
-  }
-  if ((sr1 & I2C_SR1_AF) == I2C_SR1_AF) {
-    /* NACK from master (typical end of read). Clear and go back to listen. */
-    CLEAR_BIT(i2c->SR1, I2C_SR1_AF);
-    obj->slaveTxIdx = 0;
-    obj->i2cTxRxBufferSize = 0;
-    obj->slaveMode = SLAVE_MODE_LISTEN;
-  }
-
-  /* Address matched: decide direction and prime TX if needed */
-  if ((sr1 & I2C_SR1_ADDR) == I2C_SR1_ADDR) {
-    volatile uint32_t tmp = i2c->SR1;
-    (void)tmp;
-    uint32_t sr2 = i2c->SR2; /* clears ADDR */
-
-    /* If master is doing repeated-start (write then read), deliver RX bytes now. */
-    if ((obj->slaveMode == SLAVE_MODE_RECEIVE) && (obj->slaveRxNbData != 0) && (obj->i2c_onSlaveReceive != NULL)) {
-      obj->i2c_onSlaveReceive(obj);
-      obj->slaveRxNbData = 0;
-    }
-
-    if ((sr2 & I2C_SR2_TRA) == I2C_SR2_TRA) {
-      /* Master reads -> we transmit */
-      obj->slaveMode = SLAVE_MODE_TRANSMIT;
-      obj->slaveTxIdx = 0;
-
-      if (obj->i2c_onSlaveTransmit != NULL) {
-        obj->i2cTxRxBufferSize = 0;
-        obj->i2c_onSlaveTransmit(obj);
-      }
-
-      uint8_t out = 0x00;
-      if (obj->slaveTxIdx < obj->i2cTxRxBufferSize) {
-        out = obj->i2cTxRxBuffer[obj->slaveTxIdx++];
-      }
-      i2c->DR = out;
-    } else {
-      /* Master writes -> we receive */
-      obj->slaveMode = SLAVE_MODE_RECEIVE;
-      obj->slaveRxNbData = 0;
-    }
-  }
-
-  /* Stop condition: end of transaction */
-  if ((sr1 & I2C_SR1_STOPF) == I2C_SR1_STOPF) {
-    volatile uint32_t tmp = i2c->SR1;
-    (void)tmp;
-    SET_BIT(i2c->CR1, I2C_CR1_PE); /* clears STOPF */
-
-    if ((obj->slaveMode == SLAVE_MODE_RECEIVE) && (obj->slaveRxNbData != 0) && (obj->i2c_onSlaveReceive != NULL)) {
-      obj->i2c_onSlaveReceive(obj);
-    }
-
-    obj->slaveMode = SLAVE_MODE_LISTEN;
-    obj->slaveRxNbData = 0;
-    obj->slaveTxIdx = 0;
-    obj->i2cTxRxBufferSize = 0;
-  }
-
-  /* RXNE: one byte received from master */
-  if ((sr1 & I2C_SR1_RXNE) == I2C_SR1_RXNE) {
-    uint8_t in = (uint8_t)i2c->DR;
-    if (obj->slaveMode == SLAVE_MODE_RECEIVE) {
-      if (obj->slaveRxNbData < I2C_TXRX_BUFFER_SIZE) {
-        obj->i2cTxRxBuffer[obj->slaveRxNbData++] = in;
-      }
-    }
-  }
-
-  /* TXE: master expects another byte */
-  if ((sr1 & I2C_SR1_TXE) == I2C_SR1_TXE) {
-    if (obj->slaveMode == SLAVE_MODE_TRANSMIT) {
-      uint8_t out = 0x00;
-      if (obj->slaveTxIdx < obj->i2cTxRxBufferSize) {
-        out = obj->i2cTxRxBuffer[obj->slaveTxIdx++];
-      }
-      i2c->DR = out;
-    }
-  }
-}
-#endif
-
 /* Generic definition for series requiring I2C timing calculation */
 #if !defined (AIR32F1xx) && !defined (AIRF2xx) && !defined (AIRF4xx) &&\
     !defined (AIRL1xx) && !defined(PY32F0xx)
@@ -833,9 +682,6 @@ void i2c_custom_init(i2c_t *obj, uint32_t timing, uint32_t addressingMode, uint3
           __HAL_RCC_I2C_CLK_ENABLE();
           __HAL_RCC_I2C_FORCE_RESET();
           __HAL_RCC_I2C_RELEASE_RESET();
-
-    /* If user selected PF0/PF1 pins, apply I2C1 remap (matches common PY32 setup). */
-    py32_try_i2c1_remap_pf01(obj);
 #else
           __HAL_RCC_I2C1_CLK_ENABLE();
           __HAL_RCC_I2C1_FORCE_RESET();
@@ -939,7 +785,6 @@ void i2c_custom_init(i2c_t *obj, uint32_t timing, uint32_t addressingMode, uint3
         handle->State = HAL_I2C_STATE_RESET;
 
         HAL_NVIC_SetPriority(obj->irq, I2C_IRQ_PRIO, I2C_IRQ_SUBPRIO);
-        HAL_NVIC_ClearPendingIRQ(obj->irq);
         HAL_NVIC_EnableIRQ(obj->irq);
 #if !defined(AIRC0xx) && !defined(PY32F0xx) && !defined(AIRG0xx) && !defined(AIRL0xx)
         HAL_NVIC_SetPriority(obj->irqER, I2C_IRQ_PRIO, I2C_IRQ_SUBPRIO);
@@ -1212,16 +1057,7 @@ void i2c_attachSlaveRxEvent(i2c_t *obj, void (*function)(i2c_t *))
 {
   if ((obj != NULL) && (function != NULL)) {
     obj->i2c_onSlaveReceive = function;
-#if defined(PY32F0xx)
-    obj->slaveMode = SLAVE_MODE_LISTEN;
-    obj->slaveRxNbData = 0;
-    obj->slaveTxIdx = 0;
-    /* Enable ACK and I2C interrupts for our direct slave IRQ handler */
-    SET_BIT(obj->i2c->CR1, I2C_CR1_ACK);
-    SET_BIT(obj->i2c->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);
-#else
     HAL_I2C_EnableListen_IT(&(obj->handle));
-#endif
   }
 }
 
@@ -1234,16 +1070,7 @@ void i2c_attachSlaveTxEvent(i2c_t *obj, void (*function)(i2c_t *))
 {
   if ((obj != NULL) && (function != NULL)) {
     obj->i2c_onSlaveTransmit = function;
-#if defined(PY32F0xx)
-    obj->slaveMode = SLAVE_MODE_LISTEN;
-    obj->slaveRxNbData = 0;
-    obj->slaveTxIdx = 0;
-    /* Enable ACK and I2C interrupts for our direct slave IRQ handler */
-    SET_BIT(obj->i2c->CR1, I2C_CR1_ACK);
-    SET_BIT(obj->i2c->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);
-#else
     HAL_I2C_EnableListen_IT(&(obj->handle));
-#endif
   }
 }
 
@@ -1335,18 +1162,8 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c)
 void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
   i2c_t *obj = get_i2c_obj(hi2c);
-  /*
-   * Slave transmitter: many masters end a read with NACK+STOP.
-   * On PY32F0xx the HAL doesn't always return to Listen mode after this,
-   * which prevents subsequent address matches and makes slave TX work only once.
-   *
-   * Reset internal state and explicitly re-enable Listen mode so the next
-   * requestFrom() is serviced without reinitializing the peripheral.
-   */
+  /* Reset transmit buffer size */
   obj->i2cTxRxBufferSize = 0;
-  obj->slaveMode = SLAVE_MODE_LISTEN;
-  obj->slaveRxNbData = 0;
-  HAL_I2C_EnableListen_IT(hi2c);
 }
 
 /**
@@ -1364,10 +1181,6 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
   i2c_t *obj = get_i2c_obj(hi2c);
 
   if (obj->isMaster == 0) {
-    /* Ensure slave state is ready for the next transaction (e.g. after AF/NACK). */
-    obj->i2cTxRxBufferSize = 0;
-    obj->slaveMode = SLAVE_MODE_LISTEN;
-    obj->slaveRxNbData = 0;
     HAL_I2C_EnableListen_IT(hi2c);
   }
 }
@@ -1381,15 +1194,6 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
 void I2C1_EV_IRQHandler(void)
 {
   I2C_HandleTypeDef *handle = i2c_handles[I2C1_INDEX];
-#if defined(PY32F0xx)
-  if (handle != NULL) {
-    i2c_t *obj = get_i2c_obj(handle);
-    if ((obj != NULL) && (obj->isMaster == 0)) {
-      i2c_slave_irq_py32(obj);
-      return;
-    }
-  }
-#endif
   HAL_I2C_EV_IRQHandler(handle);
 #if defined(AIRC0xx) || defined(PY32F0xx) || defined(AIRG0xx) || defined(AIRL0xx)
   HAL_I2C_ER_IRQHandler(handle);

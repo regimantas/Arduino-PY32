@@ -1,5 +1,5 @@
 name=PY32Duino
-version=0.2.16
+version=0.2.47
 
 ## compiler variables 编译器的路径
 compiler.path={runtime.tools.xpack-arm-none-eabi-gcc.path}/bin/
@@ -217,7 +217,7 @@ tools.ArduinoPY32Flasher.upload.params.quiet=
 # ArduinoPY32Flasher.exe CLI:
 #   ArduinoPY32Flasher [--target ...] [--probe ...] flash --input <file> [--erase] [--reset]
 # It ignores --port/--baud, but we keep them for Arduino compatibility.
-tools.ArduinoPY32Flasher.upload.pattern_args=--port "{serial.port}" --baud {upload.speed} flash --input "{build.path}/{build.project_name}.bin" --reset
+tools.ArduinoPY32Flasher.upload.pattern_args=--port "{serial.port}" --baud {upload.speed} --target "{build.product_line}" flash --input "{build.path}/{build.project_name}.bin" --reset
 
 # Windows runs the downloaded binary directly
 tools.ArduinoPY32Flasher.upload.pattern.windows="{path}/ArduinoPY32Flasher-windows.exe" {upload.pattern_args}
@@ -227,6 +227,26 @@ tools.ArduinoPY32Flasher.upload.pattern.linux=bash -c "if [ -f \"{path}/ArduinoP
 
 # macOS not provided (yet): fail with a clear message
 tools.ArduinoPY32Flasher.upload.pattern.macosx=bash -c "echo 'ArduinoPY32Flasher: macOS tool not available'; exit 1"
+
+## Program Application (Upload Using Programmer)
+## -------------------------------------------
+tools.ArduinoPY32Flasher.program.protocol=stlink
+tools.ArduinoPY32Flasher.program.params.verbose=
+tools.ArduinoPY32Flasher.program.params.quiet=
+tools.ArduinoPY32Flasher.program.pattern_args=--port "{serial.port}" --baud {upload.speed} --target "{build.product_line}" flash --input "{build.path}/{build.project_name}.bin" --reset
+tools.ArduinoPY32Flasher.program.pattern.windows="{path}/ArduinoPY32Flasher-windows.exe" {program.pattern_args}
+tools.ArduinoPY32Flasher.program.pattern.linux=bash -c "if [ -f \"{path}/ArduinoPY32Flasher-linux-x64\" ]; then chmod +x \"{path}/ArduinoPY32Flasher-linux-x64\"; \"{path}/ArduinoPY32Flasher-linux-x64\" {program.pattern_args}; elif [ -f \"{path}/ArduinoPY32Flasher-linux-arm64\" ]; then chmod +x \"{path}/ArduinoPY32Flasher-linux-arm64\"; \"{path}/ArduinoPY32Flasher-linux-arm64\" {program.pattern_args}; else echo 'ArduinoPY32Flasher: missing linux binary in tool folder'; exit 1; fi"
+tools.ArduinoPY32Flasher.program.pattern.macosx=bash -c "echo 'ArduinoPY32Flasher: macOS tool not available'; exit 1"
+
+## Erase Chip
+## ---------
+tools.ArduinoPY32Flasher.erase.protocol=stlink
+tools.ArduinoPY32Flasher.erase.params.verbose=
+tools.ArduinoPY32Flasher.erase.params.quiet=
+tools.ArduinoPY32Flasher.erase.pattern_args=--port "{serial.port}" --baud {upload.speed} --target "{build.product_line}" erase --mass
+tools.ArduinoPY32Flasher.erase.pattern.windows="{path}/ArduinoPY32Flasher-windows.exe" {erase.pattern_args}
+tools.ArduinoPY32Flasher.erase.pattern.linux=bash -c "if [ -f \"{path}/ArduinoPY32Flasher-linux-x64\" ]; then chmod +x \"{path}/ArduinoPY32Flasher-linux-x64\"; \"{path}/ArduinoPY32Flasher-linux-x64\" {erase.pattern_args}; elif [ -f \"{path}/ArduinoPY32Flasher-linux-arm64\" ]; then chmod +x \"{path}/ArduinoPY32Flasher-linux-arm64\"; \"{path}/ArduinoPY32Flasher-linux-arm64\" {erase.pattern_args}; else echo 'ArduinoPY32Flasher: missing linux binary in tool folder'; exit 1; fi"
+tools.ArduinoPY32Flasher.erase.pattern.macosx=bash -c "echo 'ArduinoPY32Flasher: macOS tool not available'; exit 1"
 
 # Debugger configuration (general options)
 # ----------------------------------------

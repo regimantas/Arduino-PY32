@@ -6,7 +6,7 @@
 #include "startup_py32f030.s"
 #elif defined(PY32F003x4) || defined(PY32F003x6) || defined(PY32F003x8)
 #include "startup_py32f003.s"
-#elif defined(PY32F002Ax5)
+#elif defined(PY32F002Ax5) || defined(PY32F002Bx5)
 #include "startup_py32f002a.s"
 #else
 #error UNKNOWN CHIP
