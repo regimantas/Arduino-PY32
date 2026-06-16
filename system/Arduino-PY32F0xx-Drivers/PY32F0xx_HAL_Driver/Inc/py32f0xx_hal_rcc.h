@@ -681,6 +681,16 @@ typedef struct
                                                  UNUSED(tmpreg); \
                                                } while(0U)
 
+#if defined(RCC_IOPENR_GPIOCEN)
+#define __HAL_RCC_GPIOC_CLK_ENABLE()           do { \
+                                                 __IO uint32_t tmpreg; \
+                                                 SET_BIT(RCC->IOPENR, RCC_IOPENR_GPIOCEN); \
+                                                 /* Delay after an RCC peripheral clock enabling */ \
+                                                 tmpreg = READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOCEN); \
+                                                 UNUSED(tmpreg); \
+                                               } while(0U)
+#endif
+
 #define __HAL_RCC_GPIOF_CLK_ENABLE()           do { \
                                                  __IO uint32_t tmpreg; \
                                                  SET_BIT(RCC->IOPENR, RCC_IOPENR_GPIOFEN); \
@@ -691,6 +701,9 @@ typedef struct
 
 #define __HAL_RCC_GPIOA_CLK_DISABLE()          CLEAR_BIT(RCC->IOPENR, RCC_IOPENR_GPIOAEN)
 #define __HAL_RCC_GPIOB_CLK_DISABLE()          CLEAR_BIT(RCC->IOPENR, RCC_IOPENR_GPIOBEN)
+#if defined(RCC_IOPENR_GPIOCEN)
+#define __HAL_RCC_GPIOC_CLK_DISABLE()          CLEAR_BIT(RCC->IOPENR, RCC_IOPENR_GPIOCEN)
+#endif
 #define __HAL_RCC_GPIOF_CLK_DISABLE()          CLEAR_BIT(RCC->IOPENR, RCC_IOPENR_GPIOFEN)
 
 /**
@@ -711,6 +724,24 @@ typedef struct
                                                  SET_BIT(RCC->APBENR1, RCC_APBENR1_TIM3EN); \
                                                  /* Delay after an RCC peripheral clock enabling */ \
                                                  tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_TIM3EN); \
+                                                 UNUSED(tmpreg); \
+                                               } while(0U)
+#endif
+
+#if defined(RCC_APBENR1_TIM6EN)
+#define __HAL_RCC_TIM6_CLK_ENABLE()            do { \
+                                                 __IO uint32_t tmpreg; \
+                                                 SET_BIT(RCC->APBENR1, RCC_APBENR1_TIM6EN); \
+                                                 tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_TIM6EN); \
+                                                 UNUSED(tmpreg); \
+                                               } while(0U)
+#endif
+
+#if defined(RCC_APBENR1_TIM7EN)
+#define __HAL_RCC_TIM7_CLK_ENABLE()            do { \
+                                                 __IO uint32_t tmpreg; \
+                                                 SET_BIT(RCC->APBENR1, RCC_APBENR1_TIM7EN); \
+                                                 tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_TIM7EN); \
                                                  UNUSED(tmpreg); \
                                                } while(0U)
 #endif
@@ -755,6 +786,7 @@ typedef struct
                                                } while(0U)
 #endif
 
+#if defined(RCC_APBENR1_I2CEN)
 #define __HAL_RCC_I2C_CLK_ENABLE()            do { \
                                                  __IO uint32_t tmpreg; \
                                                  SET_BIT(RCC->APBENR1, RCC_APBENR1_I2CEN); \
@@ -762,6 +794,27 @@ typedef struct
                                                  tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_I2CEN); \
                                                  UNUSED(tmpreg); \
                                                } while(0U)
+#elif defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C_CLK_ENABLE()            do { \
+                                                 __IO uint32_t tmpreg; \
+                                                 SET_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN); \
+                                                 tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN); \
+                                                 UNUSED(tmpreg); \
+                                               } while(0U)
+#endif
+
+#if defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C1_CLK_ENABLE()           __HAL_RCC_I2C_CLK_ENABLE
+#endif
+
+#if defined(RCC_APBENR1_I2C2EN)
+#define __HAL_RCC_I2C2_CLK_ENABLE()           do { \
+                                                 __IO uint32_t tmpreg; \
+                                                 SET_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN); \
+                                                 tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN); \
+                                                 UNUSED(tmpreg); \
+                                               } while(0U)
+#endif
 
 #define __HAL_RCC_DBGMCU_CLK_ENABLE()             do { \
                                                  __IO uint32_t tmpreg; \
@@ -831,6 +884,14 @@ typedef struct
                                                  tmpreg = READ_BIT(RCC->APBENR2, RCC_APBENR2_USART1EN); \
                                                  UNUSED(tmpreg); \
                                                } while(0U)
+#if defined(RCC_APBENR2_TIM15EN)
+#define __HAL_RCC_TIM15_CLK_ENABLE()           do { \
+                                                 __IO uint32_t tmpreg; \
+                                                 SET_BIT(RCC->APBENR2, RCC_APBENR2_TIM15EN); \
+                                                 tmpreg = READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM15EN); \
+                                                 UNUSED(tmpreg); \
+                                               } while(0U)
+#endif
 #if defined(TIM14)
 #define __HAL_RCC_TIM14_CLK_ENABLE()            do { \
                                                  __IO uint32_t tmpreg; \
@@ -907,7 +968,23 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_USART2EN)
 #endif
+#if defined(RCC_APBENR1_TIM6EN)
+#define __HAL_RCC_TIM6_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_TIM6EN)
+#endif
+#if defined(RCC_APBENR1_TIM7EN)
+#define __HAL_RCC_TIM7_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_TIM7EN)
+#endif
+#if defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C1_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)
+#endif
+#if defined(RCC_APBENR1_I2C2EN)
+#define __HAL_RCC_I2C2_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN)
+#endif
+#if defined(RCC_APBENR1_I2CEN)
 #define __HAL_RCC_I2C_CLK_DISABLE()            CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_I2CEN)
+#elif defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C_CLK_DISABLE()            CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)
+#endif
 #define __HAL_RCC_DBGMCU_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN)
 #define __HAL_RCC_PWR_CLK_DISABLE()            CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_PWREN)
 #define __HAL_RCC_LPTIM_CLK_DISABLE()          CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_LPTIMEN)
@@ -916,6 +993,9 @@ typedef struct
 #define __HAL_RCC_TIM1_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_TIM1EN)
 #define __HAL_RCC_SPI1_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_SPI1EN)
 #define __HAL_RCC_USART1_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_USART1EN)
+#if defined(RCC_APBENR2_TIM15EN)
+#define __HAL_RCC_TIM15_CLK_DISABLE()          CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_TIM15EN)
+#endif
 #if defined(TIM14)
 #define __HAL_RCC_TIM14_CLK_DISABLE()          CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_TIM14EN)
 #endif
@@ -969,10 +1049,16 @@ typedef struct
   */
 #define __HAL_RCC_GPIOA_IS_CLK_ENABLED()       (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOAEN) != RESET)
 #define __HAL_RCC_GPIOB_IS_CLK_ENABLED()       (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOBEN) != RESET)
+#if defined(RCC_IOPENR_GPIOCEN)
+#define __HAL_RCC_GPIOC_IS_CLK_ENABLED()       (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOCEN) != RESET)
+#endif
 #define __HAL_RCC_GPIOF_IS_CLK_ENABLED()       (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOFEN) != RESET)
 
 #define __HAL_RCC_GPIOA_IS_CLK_DISABLED()      (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOAEN) == RESET)
 #define __HAL_RCC_GPIOB_IS_CLK_DISABLED()      (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOBEN) == RESET)
+#if defined(RCC_IOPENR_GPIOCEN)
+#define __HAL_RCC_GPIOC_IS_CLK_DISABLED()      (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOCEN) == RESET)
+#endif
 #define __HAL_RCC_GPIOF_IS_CLK_DISABLED()      (READ_BIT(RCC->IOPENR, RCC_IOPENR_GPIOFEN) == RESET)
 
 /**
@@ -1001,7 +1087,23 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_IS_CLK_ENABLED()      (READ_BIT(RCC->APBENR1, RCC_APBENR1_USART2EN) != 0U)
 #endif
+#if defined(RCC_APBENR1_TIM6EN)
+#define __HAL_RCC_TIM6_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_TIM6EN)   != 0U)
+#endif
+#if defined(RCC_APBENR1_TIM7EN)
+#define __HAL_RCC_TIM7_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_TIM7EN)   != 0U)
+#endif
+#if defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C1_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)   != 0U)
+#endif
+#if defined(RCC_APBENR1_I2C2EN)
+#define __HAL_RCC_I2C2_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN)   != 0U)
+#endif
+#if defined(RCC_APBENR1_I2CEN)
 #define __HAL_RCC_I2C_IS_CLK_ENABLED()         (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2CEN)    != 0U)
+#elif defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C_IS_CLK_ENABLED()         (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)   != 0U)
+#endif
 #define __HAL_RCC_DBGMCU_IS_CLK_ENABLED()      (READ_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN)    != 0U)
 #define __HAL_RCC_PWR_IS_CLK_ENABLED()         (READ_BIT(RCC->APBENR1, RCC_APBENR1_PWREN)    != 0U)
 #define __HAL_RCC_LPTIM_IS_CLK_ENABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_LPTIMEN)  != 0U)
@@ -1021,7 +1123,23 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_IS_CLK_DISABLED()     (READ_BIT(RCC->APBENR1, RCC_APBENR1_USART2EN) == 0U)
 #endif
-#define __HAL_RCC_I2C1_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2CEN)    == 0U)
+#if defined(RCC_APBENR1_TIM6EN)
+#define __HAL_RCC_TIM6_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_TIM6EN)   == 0U)
+#endif
+#if defined(RCC_APBENR1_TIM7EN)
+#define __HAL_RCC_TIM7_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_TIM7EN)   == 0U)
+#endif
+#if defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C1_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)   == 0U)
+#endif
+#if defined(RCC_APBENR1_I2C2EN)
+#define __HAL_RCC_I2C2_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN)   == 0U)
+#endif
+#if defined(RCC_APBENR1_I2CEN)
+#define __HAL_RCC_I2C_IS_CLK_DISABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2CEN)    == 0U)
+#elif defined(RCC_APBENR1_I2C1EN)
+#define __HAL_RCC_I2C_IS_CLK_DISABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)   == 0U)
+#endif
 #define __HAL_RCC_DBGMCU_IS_CLK_DISABLED()     (READ_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN)    == 0U)
 #define __HAL_RCC_PWR_IS_CLK_DISABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_PWREN)    == 0U)
 #define __HAL_RCC_LPTIM_IS_CLK_DISABLED()      (READ_BIT(RCC->APBENR1, RCC_APBENR1_LPTIMEN)  == 0U)
@@ -1043,6 +1161,9 @@ typedef struct
 #define __HAL_RCC_TIM1_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM1EN)   != 0U)
 #define __HAL_RCC_SPI1_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR2, RCC_APBENR2_SPI1EN)   != 0U)
 #define __HAL_RCC_USART1_IS_CLK_ENABLED()      (READ_BIT(RCC->APBENR2, RCC_APBENR2_USART1EN) != 0U)
+#if defined(RCC_APBENR2_TIM15EN)
+#define __HAL_RCC_TIM15_IS_CLK_ENABLED()       (READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM15EN)  != 0U)
+#endif
 #if defined(TIM14)
 #define __HAL_RCC_TIM14_IS_CLK_ENABLED()       (READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM14EN)  != 0U)
 #endif
@@ -1067,6 +1188,9 @@ typedef struct
 #define __HAL_RCC_USART1_IS_CLK_DISABLED()     (READ_BIT(RCC->APBENR2, RCC_APBENR2_USART1EN) == 0U)
 #if defined(TIM14)
 #define __HAL_RCC_TIM14_IS_CLK_DISABLED()      (READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM14EN)  == 0U)
+#endif
+#if defined(RCC_APBENR2_TIM15EN)
+#define __HAL_RCC_TIM15_IS_CLK_DISABLED()      (READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM15EN)  == 0U)
 #endif
 #define __HAL_RCC_TIM16_IS_CLK_DISABLED()      (READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM16EN)  == 0U)
 #if defined(TIM17)
@@ -1116,11 +1240,17 @@ typedef struct
 #define __HAL_RCC_IOP_FORCE_RESET()            WRITE_REG(RCC->IOPRSTR, 0xFFFFFFFFU)
 #define __HAL_RCC_GPIOA_FORCE_RESET()          SET_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOARST)
 #define __HAL_RCC_GPIOB_FORCE_RESET()          SET_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOBRST)
+#if defined(RCC_IOPRSTR_GPIOCRST)
+#define __HAL_RCC_GPIOC_FORCE_RESET()          SET_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOCRST)
+#endif
 #define __HAL_RCC_GPIOF_FORCE_RESET()          SET_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOFRST)
 
 #define __HAL_RCC_IOP_RELEASE_RESET()          WRITE_REG(RCC->IOPRSTR, 0x00000000U)
 #define __HAL_RCC_GPIOA_RELEASE_RESET()        CLEAR_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOARST)
 #define __HAL_RCC_GPIOB_RELEASE_RESET()        CLEAR_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOBRST)
+#if defined(RCC_IOPRSTR_GPIOCRST)
+#define __HAL_RCC_GPIOC_RELEASE_RESET()        CLEAR_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOCRST)
+#endif
 #define __HAL_RCC_GPIOF_RELEASE_RESET()        CLEAR_BIT(RCC->IOPRSTR, RCC_IOPRSTR_GPIOFRST)
 
 /**
@@ -1141,7 +1271,23 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_FORCE_RESET()         SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_USART2RST)
 #endif
+#if defined(RCC_APBRSTR1_TIM6RST)
+#define __HAL_RCC_TIM6_FORCE_RESET()           SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_TIM6RST)
+#endif
+#if defined(RCC_APBRSTR1_TIM7RST)
+#define __HAL_RCC_TIM7_FORCE_RESET()           SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_TIM7RST)
+#endif
+#if defined(RCC_APBRSTR1_I2C1RST)
+#define __HAL_RCC_I2C1_FORCE_RESET()           SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C1RST)
+#endif
+#if defined(RCC_APBRSTR1_I2C2RST)
+#define __HAL_RCC_I2C2_FORCE_RESET()           SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C2RST)
+#endif
+#if defined(RCC_APBRSTR1_I2CRST)
 #define __HAL_RCC_I2C_FORCE_RESET()            SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2CRST)
+#elif defined(RCC_APBRSTR1_I2C1RST)
+#define __HAL_RCC_I2C_FORCE_RESET()            SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C1RST)
+#endif
 #define __HAL_RCC_DBGMCU_FORCE_RESET()         SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_DBGRST)
 #define __HAL_RCC_PWR_FORCE_RESET()            SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_PWRRST)
 #define __HAL_RCC_LPTIM_FORCE_RESET()          SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_LPTIMRST)
@@ -1156,7 +1302,23 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_RELEASE_RESET()       CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_USART2RST)
 #endif
+#if defined(RCC_APBRSTR1_TIM6RST)
+#define __HAL_RCC_TIM6_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_TIM6RST)
+#endif
+#if defined(RCC_APBRSTR1_TIM7RST)
+#define __HAL_RCC_TIM7_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_TIM7RST)
+#endif
+#if defined(RCC_APBRSTR1_I2C1RST)
+#define __HAL_RCC_I2C1_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C1RST)
+#endif
+#if defined(RCC_APBRSTR1_I2C2RST)
+#define __HAL_RCC_I2C2_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C2RST)
+#endif
+#if defined(RCC_APBRSTR1_I2CRST)
 #define __HAL_RCC_I2C_RELEASE_RESET()          CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2CRST)
+#elif defined(RCC_APBRSTR1_I2C1RST)
+#define __HAL_RCC_I2C_RELEASE_RESET()          CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C1RST)
+#endif
 #define __HAL_RCC_DBGMCU_RELEASE_RESET()       CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_DBGRST)
 #define __HAL_RCC_PWR_RELEASE_RESET()          CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_PWRRST)
 #define __HAL_RCC_LPTIM_RELEASE_RESET()        CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_LPTIMRST)
@@ -1174,6 +1336,9 @@ typedef struct
 #define __HAL_RCC_TIM1_FORCE_RESET()           SET_BIT(RCC->APBRSTR2, RCC_APBRSTR2_TIM1RST)
 #define __HAL_RCC_SPI1_FORCE_RESET()           SET_BIT(RCC->APBRSTR2, RCC_APBRSTR2_SPI1RST)
 #define __HAL_RCC_USART1_FORCE_RESET()         SET_BIT(RCC->APBRSTR2, RCC_APBRSTR2_USART1RST)
+#if defined(RCC_APBRSTR2_TIM15RST)
+#define __HAL_RCC_TIM15_FORCE_RESET()          SET_BIT(RCC->APBRSTR2, RCC_APBRSTR2_TIM15RST)
+#endif
 #if defined(TIM14)
 #define __HAL_RCC_TIM14_FORCE_RESET()          SET_BIT(RCC->APBRSTR2, RCC_APBRSTR2_TIM14RST)
 #endif
@@ -1197,6 +1362,9 @@ typedef struct
 #define __HAL_RCC_TIM1_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_TIM1RST)
 #define __HAL_RCC_SPI1_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_SPI1RST)
 #define __HAL_RCC_USART1_RELEASE_RESET()       CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_USART1RST)
+#if defined(RCC_APBRSTR2_TIM15RST)
+#define __HAL_RCC_TIM15_RELEASE_RESET()        CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_TIM15RST)
+#endif
 #if defined(TIM14)
 #define __HAL_RCC_TIM14_RELEASE_RESET()        CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_TIM14RST)
 #endif

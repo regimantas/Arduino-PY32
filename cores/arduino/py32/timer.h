@@ -80,7 +80,10 @@ extern "C" {
 #endif
 
 #if defined(TIM6_BASE) && !defined(TIM6_IRQn)
-#if defined(DAC_BASE) || defined(DAC1_BASE)
+#if defined(TIM6_LPTIM1_IRQn)
+#define TIM6_IRQn TIM6_LPTIM1_IRQn
+#define TIM6_IRQHandler TIM6_LPTIM1_IRQHandler
+#elif defined(DAC_BASE) || defined(DAC1_BASE)
 #if defined(AIRG0xx)
 #define TIM6_IRQn TIM6_DAC_LPTIM1_IRQn
 #define TIM6_IRQHandler TIM6_DAC_LPTIM1_IRQHandler

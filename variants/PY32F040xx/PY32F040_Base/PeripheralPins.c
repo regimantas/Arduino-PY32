@@ -1,0 +1,107 @@
+/*
+ *******************************************************************************
+ * Copyright (c) 2023, AirM2M
+ * All rights reserved.
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ *******************************************************************************
+ */
+#if !defined(CUSTOM_PERIPHERAL_PINS)
+#include "Arduino.h"
+#include "PeripheralPins.h"
+
+#ifdef HAL_ADC_MODULE_ENABLED
+WEAK const PinMap PinMap_ADC[] = {
+  {PA_0, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 0, 0)},
+  {PA_1, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 1, 0)},
+  {PA_2, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 2, 0)},
+  {PA_3, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 3, 0)},
+  {PA_4, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 4, 0)},
+  {PA_5, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 5, 0)},
+  {PA_6, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 6, 0)},
+  {PA_7, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 7, 0)},
+  {PB_0, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 8, 0)},
+  {PB_1, ADC1, PY32_PIN_DATA_EXT(PY32_MODE_ANALOG, GPIO_NOPULL, 0, 9, 0)},
+  {NC,   NP,   0}
+};
+#endif
+
+#ifdef HAL_I2C_MODULE_ENABLED
+WEAK const PinMap PinMap_I2C_SDA[] = {
+  {PB_7, I2C1, PY32_PIN_DATA(PY32_MODE_AF_OD, GPIO_PULLUP, GPIO_AF6_I2C)},
+  {NC,   NP,   0}
+};
+
+WEAK const PinMap PinMap_I2C_SCL[] = {
+  {PB_6, I2C1, PY32_PIN_DATA(PY32_MODE_AF_OD, GPIO_PULLUP, GPIO_AF6_I2C)},
+  {NC,   NP,   0}
+};
+#endif
+
+#ifdef HAL_TIM_MODULE_ENABLED
+WEAK const PinMap PinMap_TIM[] = {
+  {PA_4, TIM14, PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF4_TIM14, 1, 0)},
+  {PA_6, TIM3,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_TIM3, 1, 0)},
+  {PA_7, TIM3,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_TIM3, 2, 0)},
+  {PA_8, TIM1,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF2_TIM1, 1, 0)},
+  {PA_9, TIM1,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF2_TIM1, 2, 0)},
+  {PA_10,TIM1,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF2_TIM1, 3, 0)},
+  {PA_11,TIM1,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF2_TIM1, 4, 0)},
+  {PB_0, TIM3,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_TIM3, 3, 0)},
+  {PB_1, TIM3,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_TIM3, 4, 0)},
+  {PB_4, TIM3,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_TIM3, 1, 0)},
+  {PB_5, TIM3,  PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_TIM3, 2, 0)},
+  {PB_8, TIM16, PY32_PIN_DATA_EXT(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF2_TIM16, 1, 0)},
+  {NC,   NP,    0}
+};
+#endif
+
+#ifdef HAL_UART_MODULE_ENABLED
+WEAK const PinMap PinMap_UART_TX[] = {
+  {PA_9,  USART1, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_USART1)},
+  {PA_2,  USART2, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF4_USART2)},
+  {NC,    NP,     0}
+};
+
+WEAK const PinMap PinMap_UART_RX[] = {
+  {PA_10, USART1, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF1_USART1)},
+  {PA_3,  USART2, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF4_USART2)},
+  {NC,    NP,     0}
+};
+
+WEAK const PinMap PinMap_UART_RTS[] = {
+  {NC, NP, 0}
+};
+
+WEAK const PinMap PinMap_UART_CTS[] = {
+  {NC, NP, 0}
+};
+#endif
+
+#ifdef HAL_SPI_MODULE_ENABLED
+WEAK const PinMap PinMap_SPI_MOSI[] = {
+  {PA_7, SPI1, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF0_SPI1)},
+  {NC,   NP,   0}
+};
+
+WEAK const PinMap PinMap_SPI_MISO[] = {
+  {PA_6, SPI1, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF0_SPI1)},
+  {NC,   NP,   0}
+};
+
+WEAK const PinMap PinMap_SPI_SCLK[] = {
+  {PA_5, SPI1, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF0_SPI1)},
+  {NC,   NP,   0}
+};
+
+WEAK const PinMap PinMap_SPI_SSEL[] = {
+  {PA_4, SPI1, PY32_PIN_DATA(PY32_MODE_AF_PP, GPIO_PULLUP, GPIO_AF0_SPI1)},
+  {NC,   NP,   0}
+};
+#endif
+
+#endif /* !CUSTOM_PERIPHERAL_PINS */

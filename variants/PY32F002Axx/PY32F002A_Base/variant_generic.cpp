@@ -10,7 +10,7 @@
  *
  *******************************************************************************
  */
-#if defined (PY32F002Ax5) || defined (PY32F002Bx5)
+#if defined (PY32F002Ax5)
 #include "pins_arduino.h"
 
 // Digital PinName array

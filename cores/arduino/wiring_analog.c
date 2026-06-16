@@ -18,7 +18,9 @@
 
 #include "Arduino.h"
 #include "PinConfigured.h"
+#if defined(HAL_ADC_MODULE_ENABLED) && !defined(HAL_ADC_MODULE_ONLY)
 #include "py32yyxx_ll_adc.h"
+#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -202,13 +204,18 @@ extern "C"
   uint32_t analogReadMillivolts(uint32_t ulPin)
   {
     uint32_t value = 0;
+#if defined(HAL_ADC_MODULE_ENABLED) && !defined(HAL_ADC_MODULE_ONLY)
     uint32_t VRef = analogReadVref();
     value = analogReadVoltage(VRef, ulPin);
+#else
+    UNUSED(ulPin);
+#endif
     return value;
   }
 
   int32_t analogReadVref()
   {
+#if defined(HAL_ADC_MODULE_ENABLED) && !defined(HAL_ADC_MODULE_ONLY)
 #ifdef __LL_ADC_CALC_VREFANALOG_VOLTAGE
 #ifdef AIR32U5xx
     return (__LL_ADC_CALC_VREFANALOG_VOLTAGE(ADC1, analogRead(AVREF), LL_ADC_RESOLUTION));
@@ -218,10 +225,14 @@ extern "C"
 #else
   return (VREFINT * ADC_RANGE / analogRead(AVREF)); // ADC sample to mV
 #endif
+#else
+  return 0;
+#endif
   }
 
   int32_t analogReadTempSensor()
   {
+#if defined(HAL_ADC_MODULE_ENABLED) && !defined(HAL_ADC_MODULE_ONLY)
 #ifdef ATEMP
     int32_t VRef = analogReadVref();
 #ifdef __LL_ADC_CALC_TEMPERATURE
@@ -241,14 +252,23 @@ extern "C"
   return 0;
 
 #endif
+#else
+  return 0;
+#endif
   }
 
   int32_t analogReadVoltage(int32_t VRef, uint32_t pin)
   {
+#if defined(HAL_ADC_MODULE_ENABLED) && !defined(HAL_ADC_MODULE_ONLY)
 #ifdef AIR32U5xx
     return (__LL_ADC_CALC_DATA_TO_VOLTAGE(ADC1, VRef, analogRead(pin), LL_ADC_RESOLUTION));
 #else
   return (__LL_ADC_CALC_DATA_TO_VOLTAGE(VRef, analogRead(pin), LL_ADC_RESOLUTION));
+#endif
+#else
+  UNUSED(VRef);
+  UNUSED(pin);
+  return 0;
 #endif
   }
 

@@ -19,7 +19,11 @@
 #include "Arduino.h"
 #include "PinConfigured.h"
 
-#if (defined(PY32F002APRE) || defined(PY32F003PRE)) && defined(FLASH_OPTR_NRST_MODE)
+#ifndef PY32_APPLY_NRST_OPTION_BYTES
+#define PY32_APPLY_NRST_OPTION_BYTES 0
+#endif
+
+#if (defined(PY32F002APRE) || defined(PY32F003PRE)) && defined(FLASH_OPTR_NRST_MODE) && PY32_APPLY_NRST_OPTION_BYTES
 #include "py32f0xx_hal_flash.h"
 #endif
 
@@ -41,7 +45,7 @@ bool isReset(void)
 #endif
 }
 
-#if (defined(PY32F002APRE) || defined(PY32F003PRE)) && defined(FLASH_OPTR_NRST_MODE)
+#if (defined(PY32F002APRE) || defined(PY32F003PRE)) && defined(FLASH_OPTR_NRST_MODE) && PY32_APPLY_NRST_OPTION_BYTES
 static void py32_pf2_set_nrst_as_gpio(bool enableGpio)
 {
   const bool isGpioNow = ((FLASH->OPTR & FLASH_OPTR_NRST_MODE) != 0U);
@@ -75,6 +79,7 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
   if (p != NC) {
 #if (defined(PY32F002APRE) || defined(PY32F003PRE)) && defined(FLASH_OPTR_NRST_MODE)
     if (p == PF_2) {
+#if PY32_APPLY_NRST_OPTION_BYTES
       if (ulMode == NRST) {
         py32_pf2_set_nrst_as_gpio(false);
         return;
@@ -82,6 +87,11 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
       if (ulMode != INPUT_ANALOG) {
         py32_pf2_set_nrst_as_gpio(true);
       }
+#else
+      if (ulMode == NRST || ((FLASH->OPTR & FLASH_OPTR_NRST_MODE) == 0U)) {
+        return;
+      }
+#endif
     }
 #endif
     // If the pin that support PWM or DAC output, we need to turn it off

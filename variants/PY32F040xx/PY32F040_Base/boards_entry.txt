@@ -1,0 +1,6 @@
+GenF040.menu.pnum.PY32F040C1BT6=PY32F040C1BT6 (LQFP48, 128K Flash, 16K SRAM)
+GenF040.menu.pnum.PY32F040C1BT6.upload.maximum_size=131072
+GenF040.menu.pnum.PY32F040C1BT6.upload.maximum_data_size=16384
+GenF040.menu.pnum.PY32F040C1BT6.build.board=PY32F040C1BT6
+GenF040.menu.pnum.PY32F040C1BT6.build.product_line=PY32F040CxB
+GenF040.menu.pnum.PY32F040C1BT6.build.variant=PY32F040xx/PY32F040_Base

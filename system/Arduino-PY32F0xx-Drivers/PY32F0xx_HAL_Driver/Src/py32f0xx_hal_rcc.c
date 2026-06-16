@@ -1094,6 +1094,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
   uint32_t hsiIndex;
 #if defined(RCC_PLL_SUPPORT)
   uint32_t pllsource;
+  uint32_t pllmul;
 #endif
   
   if (__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_HSI)
@@ -1118,11 +1119,12 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
   else if (__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_PLL)
   {
     pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC);
+    pllmul = ((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U);
 
     switch (pllsource)
     {
     case RCC_PLLSOURCE_HSE:  /* HSE used as PLL clock source */
-      sysclockfreq =  HSE_VALUE  * 2;
+      sysclockfreq =  HSE_VALUE  * pllmul;
       break;
 
     case RCC_PLLSOURCE_HSI:  /* HSI used as PLL clock source */
@@ -1131,11 +1133,11 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
       {
         hsiIndex = 0;
       }
-      sysclockfreq =  hsiValue[hsiIndex]  * 2;
+      sysclockfreq =  hsiValue[hsiIndex]  * pllmul;
       break;
 
     default:                 /* HSI used as PLL clock source */
-      sysclockfreq = hsiValue[4]  * 2;
+      sysclockfreq = hsiValue[4]  * pllmul;
       break;
     }
   }

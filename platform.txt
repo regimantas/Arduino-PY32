@@ -1,5 +1,5 @@
-name=PY32Duino
-version=0.2.47
+﻿name=PY32Duino
+version=0.2.55
 
 ## compiler variables 编译器的路径
 compiler.path={runtime.tools.xpack-arm-none-eabi-gcc.path}/bin/
@@ -105,6 +105,7 @@ build.xSerial=-DHAL_UART_MODULE_ENABLED
 build.enable_usb=
 build.usb_speed=
 build.enable_virtio=
+build.bor_flags=
 build.peripheral_pins=
 build.startup_file=
 build.fpu=

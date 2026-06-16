@@ -118,7 +118,7 @@ void enableTimerClock(TIM_HandleTypeDef *htim)
     __HAL_RCC_TIM1_CLK_ENABLE();
   }
 #endif
-#if defined(TIM2_BASE)
+#if defined(TIM2_BASE) && defined(__HAL_RCC_TIM2_CLK_ENABLE)
   if (htim->Instance == TIM2) {
     __HAL_RCC_TIM2_CLK_ENABLE();
   }
@@ -238,7 +238,7 @@ void disableTimerClock(TIM_HandleTypeDef *htim)
     __HAL_RCC_TIM1_CLK_DISABLE();
   }
 #endif
-#if defined(TIM2_BASE)
+#if defined(TIM2_BASE) && defined(__HAL_RCC_TIM2_CLK_DISABLE)
   if (htim->Instance == TIM2) {
     __HAL_RCC_TIM2_CLK_DISABLE();
   }
@@ -382,12 +382,12 @@ IRQn_Type getTimerUpIrq(TIM_TypeDef *tim)
         IRQn = TIM5_IRQn;
         break;
 #endif
-#if defined(TIM6_BASE)
+#if defined(TIM6_BASE) && defined(TIM6_IRQn)
       case (uint32_t)TIM6_BASE:
         IRQn = TIM6_IRQn;
         break;
 #endif
-#if defined(TIM7_BASE)
+#if defined(TIM7_BASE) && defined(TIM7_IRQn)
       case (uint32_t)TIM7_BASE:
         IRQn = TIM7_IRQn;
         break;
@@ -427,7 +427,7 @@ IRQn_Type getTimerUpIrq(TIM_TypeDef *tim)
         IRQn = TIM14_IRQn;
         break;
 #endif
-#if defined(TIM15_BASE)
+#if defined(TIM15_BASE) && defined(TIM15_IRQn)
       case (uint32_t)TIM15_BASE:
         IRQn = TIM15_IRQn;
         break;
@@ -513,12 +513,12 @@ IRQn_Type getTimerCCIrq(TIM_TypeDef *tim)
         IRQn = TIM5_IRQn;
         break;
 #endif
-#if defined(TIM6_BASE)
+#if defined(TIM6_BASE) && defined(TIM6_IRQn)
       case (uint32_t)TIM6_BASE:
         IRQn = TIM6_IRQn;
         break;
 #endif
-#if defined(TIM7_BASE)
+#if defined(TIM7_BASE) && defined(TIM7_IRQn)
       case (uint32_t)TIM7_BASE:
         IRQn = TIM7_IRQn;
         break;
@@ -558,7 +558,7 @@ IRQn_Type getTimerCCIrq(TIM_TypeDef *tim)
         IRQn = TIM14_IRQn;
         break;
 #endif
-#if defined(TIM15_BASE)
+#if defined(TIM15_BASE) && defined(TIM15_IRQn)
       case (uint32_t)TIM15_BASE:
         IRQn = TIM15_IRQn;
         break;

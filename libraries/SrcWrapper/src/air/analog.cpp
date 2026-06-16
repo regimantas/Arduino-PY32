@@ -12,7 +12,9 @@
  */
 #include "analog.h"
 #include "lock_resource.h"
+#if defined(HAL_ADC_MODULE_ENABLED) && !defined(HAL_ADC_MODULE_ONLY)
 #include "py32yyxx_ll_adc.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -897,7 +899,7 @@ uint16_t adc_read_value(PinName pin, uint32_t resolution)
   AdcHandle.Init.ExternalTrigConvEdge  = ADC_EXTERNALTRIGCONVEDGE_NONE; /* Parameter discarded because software trigger chosen */
 #endif
 #if !defined(AIR32F1xx) && !defined(AIRH7xx) && !defined(AIRMP1xx) && \
-    !defined(PY32F002Ax5) && !defined(PY32F002Bx5) && \
+    !defined(PY32F002Ax5) && \
     !defined(ADC1_V2_5)
   AdcHandle.Init.DMAContinuousRequests = DISABLE;                       /* DMA one-shot mode selected (not applied to this example) */
 #endif
@@ -941,7 +943,7 @@ uint16_t adc_read_value(PinName pin, uint32_t resolution)
 #endif
 
   AdcHandle.State = HAL_ADC_STATE_RESET;
-#if !defined(PY32F002Ax5) && !defined(PY32F002Bx5)
+#if !defined(PY32F002Ax5)
   AdcHandle.DMA_Handle = NULL;
 #endif
   AdcHandle.Lock = HAL_UNLOCKED;

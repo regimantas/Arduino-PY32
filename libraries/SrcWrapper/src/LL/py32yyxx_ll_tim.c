@@ -4,7 +4,8 @@
 
 #ifdef AIRC0xx
   #include "airc0xx_ll_tim.c"
-#elif PY32F0xx
+#elif defined(PY32F0xx) && !defined(PY32F040x6) && !defined(PY32F040x8) && !defined(PY32F040x9) && !defined(PY32F040xB) && \
+      !defined(PY32F040Cx6) && !defined(PY32F040Cx8) && !defined(PY32F040Cx9) && !defined(PY32F040CxB)
   #include "py32f0xx_ll_tim.c"
 #elif AIR32F1xx
   #include "AIR32F1xx_ll_tim.c"

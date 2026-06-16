@@ -63,7 +63,7 @@
   * @{
   */
 
-#include "py32f030xx.h"
+#include "py32f0xx.h"
 
 #if !defined  (HSE_VALUE)
 #define HSE_VALUE    24000000U    /*!< Value of the External oscillator in Hz */
@@ -138,11 +138,11 @@ void SystemCoreClockUpdate(void)             /* Get Core Clock Frequency      */
     if ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSI) /* HSI used as PLL clock source */
     {
       hsifs = ((READ_BIT(RCC->ICSCR, RCC_ICSCR_HSI_FS)) >> RCC_ICSCR_HSI_FS_Pos);
-      SystemCoreClock = 2 * (HSIFreqTable[hsifs]);
+      SystemCoreClock = (((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL)) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U) * (HSIFreqTable[hsifs]);
     }
     else   /* HSE used as PLL clock source */
     {
-      SystemCoreClock = 2 * HSE_VALUE;
+      SystemCoreClock = (((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL)) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U) * HSE_VALUE;
     }
     break;
 #endif /* RCC_PLL_SUPPORT */

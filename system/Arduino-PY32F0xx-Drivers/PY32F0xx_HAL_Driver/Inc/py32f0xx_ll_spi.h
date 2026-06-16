@@ -214,7 +214,11 @@ typedef struct
   * @{
   */
 #define LL_SPI_DATAWIDTH_8BIT               0x0              /*!< Data length for SPI transfer:  8 bits */
+#if defined(SPI_CR2_DS)
 #define LL_SPI_DATAWIDTH_16BIT             (SPI_CR2_DS)      /*!< Data length for SPI transfer: 16 bits */
+#else
+#define LL_SPI_DATAWIDTH_16BIT             (SPI_CR1_DFF)     /*!< Data length for SPI transfer: 16 bits */
+#endif
 /**
   * @}
   */
@@ -227,7 +231,11 @@ typedef struct
   * @{
   */
 #define LL_SPI_RX_FIFO_TH_HALF             0x00000000U               /*!< RXNE event is generated if FIFO level is greater than or equal to 1/2 (16-bit) */
+#if defined(SPI_CR2_FRXTH)
 #define LL_SPI_RX_FIFO_TH_QUARTER          (SPI_CR2_FRXTH)           /*!< RXNE event is generated if FIFO level is greater than or equal to 1/4 (8-bit)  */
+#else
+#define LL_SPI_RX_FIFO_TH_QUARTER          0x00000000U
+#endif
 /**
   * @}
   */
@@ -267,7 +275,11 @@ typedef struct
   * @{
   */
 #define LL_SPI_SLAVE_SPEED_NORMAL          0x00000000U      /* Slave normal mode */
+#if defined(SPI_CR2_SLVFM)
 #define LL_SPI_SLAVE_SPEED_FAST            SPI_CR2_SLVFM    /* Slave fast mode */
+#else
+#define LL_SPI_SLAVE_SPEED_FAST            0x00000000U
+#endif
 /**
   * @}
   */
@@ -556,7 +568,11 @@ __STATIC_INLINE uint32_t LL_SPI_GetTransferDirection(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_SPI_SetDataWidth(SPI_TypeDef *SPIx, uint32_t DataWidth)
 {
+#if defined(SPI_CR2_DS)
   MODIFY_REG(SPIx->CR2, SPI_CR2_DS, DataWidth);
+#else
+  MODIFY_REG(SPIx->CR1, SPI_CR1_DFF, DataWidth);
+#endif
 }
 
 /**
@@ -569,7 +585,11 @@ __STATIC_INLINE void LL_SPI_SetDataWidth(SPI_TypeDef *SPIx, uint32_t DataWidth)
   */
 __STATIC_INLINE uint32_t LL_SPI_GetDataWidth(SPI_TypeDef *SPIx)
 {
+#if defined(SPI_CR2_DS)
   return (uint32_t)(READ_BIT(SPIx->CR2, SPI_CR2_DS));
+#else
+  return (uint32_t)(READ_BIT(SPIx->CR1, SPI_CR1_DFF));
+#endif
 }
 
 /**
@@ -583,7 +603,12 @@ __STATIC_INLINE uint32_t LL_SPI_GetDataWidth(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_SPI_SetRxFIFOThreshold(SPI_TypeDef *SPIx, uint32_t Threshold)
 {
+#if defined(SPI_CR2_FRXTH)
   MODIFY_REG(SPIx->CR2, SPI_CR2_FRXTH, Threshold);
+#else
+  UNUSED(SPIx);
+  UNUSED(Threshold);
+#endif
 }
 
 /**
@@ -596,7 +621,12 @@ __STATIC_INLINE void LL_SPI_SetRxFIFOThreshold(SPI_TypeDef *SPIx, uint32_t Thres
   */
 __STATIC_INLINE uint32_t LL_SPI_GetRxFIFOThreshold(SPI_TypeDef *SPIx)
 {
+#if defined(SPI_CR2_FRXTH)
   return (uint32_t)(READ_BIT(SPIx->CR2, SPI_CR2_FRXTH));
+#else
+  UNUSED(SPIx);
+  return LL_SPI_RX_FIFO_TH_HALF;
+#endif
 }
 
 /**
@@ -983,7 +1013,12 @@ __STATIC_INLINE uint32_t LL_SPI_IsEnabledDMAReq_TX(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_SPI_SetDMAParity_RX(SPI_TypeDef *SPIx, uint32_t Parity)
 {
+#if defined(SPI_CR2_LDMA_RX)
   MODIFY_REG(SPIx->CR2, SPI_CR2_LDMA_RX, (Parity << SPI_CR2_LDMA_RX_Pos));
+#else
+  UNUSED(SPIx);
+  UNUSED(Parity);
+#endif
 }
 
 /**
@@ -998,7 +1033,12 @@ __STATIC_INLINE void LL_SPI_SetDMAParity_RX(SPI_TypeDef *SPIx, uint32_t Parity)
   */
 __STATIC_INLINE uint32_t LL_SPI_GetDMAParity_RX(SPI_TypeDef *SPIx)
 {
+#if defined(SPI_CR2_LDMA_RX)
   return (uint32_t)(READ_BIT(SPIx->CR2, SPI_CR2_LDMA_RX) >> SPI_CR2_LDMA_RX_Pos);
+#else
+  UNUSED(SPIx);
+  return LL_SPI_DMA_PARITY_EVEN;
+#endif
 }
 
 /**
@@ -1014,7 +1054,12 @@ __STATIC_INLINE uint32_t LL_SPI_GetDMAParity_RX(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_SPI_SetDMAParity_TX(SPI_TypeDef *SPIx, uint32_t Parity)
 {
+#if defined(SPI_CR2_LDMA_TX)
   MODIFY_REG(SPIx->CR2, SPI_CR2_LDMA_TX, (Parity << SPI_CR2_LDMA_TX_Pos));
+#else
+  UNUSED(SPIx);
+  UNUSED(Parity);
+#endif
 }
 
 /**
@@ -1029,7 +1074,12 @@ __STATIC_INLINE void LL_SPI_SetDMAParity_TX(SPI_TypeDef *SPIx, uint32_t Parity)
   */
 __STATIC_INLINE uint32_t LL_SPI_GetDMAParity_TX(SPI_TypeDef *SPIx)
 {
+#if defined(SPI_CR2_LDMA_TX)
   return (uint32_t)(READ_BIT(SPIx->CR2, SPI_CR2_LDMA_TX) >> SPI_CR2_LDMA_TX_Pos);
+#else
+  UNUSED(SPIx);
+  return LL_SPI_DMA_PARITY_EVEN;
+#endif
 }
 
 /**
@@ -1121,7 +1171,12 @@ __STATIC_INLINE void LL_SPI_TransmitData16(SPI_TypeDef *SPIx, uint16_t TxData)
   */
 __STATIC_INLINE void LL_SPI_SetSlaveSpeedMode(SPI_TypeDef *SPIx, uint32_t SlaveSpeedMode)
 {
+#if defined(SPI_CR2_SLVFM)
   MODIFY_REG(SPIx->CR2, SPI_CR2_SLVFM, SlaveSpeedMode);
+#else
+  UNUSED(SPIx);
+  UNUSED(SlaveSpeedMode);
+#endif
 }
 
 /**
@@ -1134,7 +1189,12 @@ __STATIC_INLINE void LL_SPI_SetSlaveSpeedMode(SPI_TypeDef *SPIx, uint32_t SlaveS
   */
 __STATIC_INLINE uint32_t LL_SPI_GetSlaveSpeedMode(SPI_TypeDef *SPIx)
 {
+#if defined(SPI_CR2_SLVFM)
   return (uint32_t)(READ_BIT(SPIx->CR2, SPI_CR2_SLVFM));
+#else
+  UNUSED(SPIx);
+  return LL_SPI_SLAVE_SPEED_NORMAL;
+#endif
 }
 
 /**

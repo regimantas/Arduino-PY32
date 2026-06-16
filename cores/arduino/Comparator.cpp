@@ -61,7 +61,7 @@ static uint32_t mapPowerModeToCSR(uint32_t powerMode)
   // On PY32F002Ax5, field values observed to work are:
   // - HighSpeed => PWRMODE=2 (COMP_CSR_PWRMODE_1)
   // - MediumSpeed => PWRMODE=1 (COMP_CSR_PWRMODE_0)
-#if defined(PY32F002Ax5) || defined(PY32F002Bx5)
+#if defined(PY32F002Ax5)
   if (powerMode == COMP_POWERMODE_HIGHSPEED) return COMP_CSR_PWRMODE_1;
   if (powerMode == COMP_POWERMODE_MEDIUMSPEED) return COMP_CSR_PWRMODE_0;
   return (powerMode & COMP_CSR_PWRMODE_Msk);

@@ -183,7 +183,7 @@ void uart_init(serial_t *obj, uint32_t baudrate, uint32_t databits, uint32_t par
     obj->irq = USART2_IRQn;
   }
 #endif
-#if defined(USART3_BASE)
+#if defined(USART3_BASE) && defined(USART3_IRQn)
   else if (obj->uart == USART3) {
     __HAL_RCC_USART3_FORCE_RESET();
     __HAL_RCC_USART3_RELEASE_RESET();
@@ -192,7 +192,7 @@ void uart_init(serial_t *obj, uint32_t baudrate, uint32_t databits, uint32_t par
     obj->irq = USART3_IRQn;
   }
 #endif
-#if defined(UART4_BASE)
+#if defined(UART4_BASE) && defined(UART4_IRQn)
   else if (obj->uart == UART4) {
     __HAL_RCC_UART4_FORCE_RESET();
     __HAL_RCC_UART4_RELEASE_RESET();
@@ -200,7 +200,7 @@ void uart_init(serial_t *obj, uint32_t baudrate, uint32_t databits, uint32_t par
     obj->index = UART4_INDEX;
     obj->irq = UART4_IRQn;
   }
-#elif defined(USART4_BASE)
+#elif defined(USART4_BASE) && defined(USART4_IRQn)
   else if (obj->uart == USART4) {
     __HAL_RCC_USART4_FORCE_RESET();
     __HAL_RCC_USART4_RELEASE_RESET();
@@ -209,7 +209,7 @@ void uart_init(serial_t *obj, uint32_t baudrate, uint32_t databits, uint32_t par
     obj->irq = USART4_IRQn;
   }
 #endif
-#if defined(UART5_BASE)
+#if defined(UART5_BASE) && defined(UART5_IRQn)
   else if (obj->uart == UART5) {
     __HAL_RCC_UART5_FORCE_RESET();
     __HAL_RCC_UART5_RELEASE_RESET();
@@ -217,7 +217,7 @@ void uart_init(serial_t *obj, uint32_t baudrate, uint32_t databits, uint32_t par
     obj->index = UART5_INDEX;
     obj->irq = UART5_IRQn;
   }
-#elif defined(USART5_BASE)
+#elif defined(USART5_BASE) && defined(USART5_IRQn)
   else if (obj->uart == USART5) {
     __HAL_RCC_USART5_FORCE_RESET();
     __HAL_RCC_USART5_RELEASE_RESET();
@@ -226,7 +226,7 @@ void uart_init(serial_t *obj, uint32_t baudrate, uint32_t databits, uint32_t par
     obj->irq = USART5_IRQn;
   }
 #endif
-#if defined(USART6_BASE)
+#if defined(USART6_BASE) && defined(USART6_IRQn)
   else if (obj->uart == USART6) {
     __HAL_RCC_USART6_FORCE_RESET();
     __HAL_RCC_USART6_RELEASE_RESET();
@@ -995,7 +995,7 @@ void USART2_IRQHandler(void)
   * @param  None
   * @retval None
   */
-#if defined(USART3_BASE)
+#if defined(USART3_BASE) && defined(USART3_IRQn)
 void USART3_IRQHandler(void)
 {
   HAL_NVIC_ClearPendingIRQ(USART3_IRQn);
@@ -1050,7 +1050,7 @@ void USART3_IRQHandler(void)
   * @param  None
   * @retval None
   */
-#if defined(UART4_BASE)
+#if defined(UART4_BASE) && defined(UART4_IRQn)
 void UART4_IRQHandler(void)
 {
   HAL_NVIC_ClearPendingIRQ(UART4_IRQn);
@@ -1064,7 +1064,7 @@ void UART4_IRQHandler(void)
   * @retval None
   */
 #if defined(AIRL0xx)
-#if defined(USART4_BASE) || defined(USART5_BASE)
+#if (defined(USART4_BASE) && defined(USART4_IRQn)) || (defined(USART5_BASE) && defined(USART5_IRQn))
 void USART4_5_IRQHandler(void)
 {
   HAL_NVIC_ClearPendingIRQ(USART4_IRQn);
@@ -1083,7 +1083,7 @@ void USART4_5_IRQHandler(void)
   * @param  None
   * @retval None
   */
-#if defined(UART5_BASE)
+#if defined(UART5_BASE) && defined(UART5_IRQn)
 void UART5_IRQHandler(void)
 {
   HAL_NVIC_ClearPendingIRQ(UART5_IRQn);
@@ -1096,7 +1096,7 @@ void UART5_IRQHandler(void)
   * @param  None
   * @retval None
   */
-#if defined(USART6_BASE) && !defined(AIRF0xx) && !defined(AIRG0xx)
+#if defined(USART6_BASE) && defined(USART6_IRQn) && !defined(AIRF0xx) && !defined(AIRG0xx)
 void USART6_IRQHandler(void)
 {
   HAL_NVIC_ClearPendingIRQ(USART6_IRQn);

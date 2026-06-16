@@ -4,9 +4,12 @@
 #if !defined(CMSIS_STARTUP_FILE) && !defined(CUSTOM_STARTUP_FILE)
 #if defined(PY32F030x3) || defined(PY32F030x4) || defined(PY32F030x6) || defined(PY32F030x7) || defined(PY32F030x8) || defined(PY32F030xx)
 #include "startup_py32f030.s"
+#elif defined(PY32F040x6) || defined(PY32F040x8) || defined(PY32F040x9) || defined(PY32F040xB) || \
+      defined(PY32F040Cx6) || defined(PY32F040Cx8) || defined(PY32F040Cx9) || defined(PY32F040CxB)
+#include "startup_py32f040.s"
 #elif defined(PY32F003x4) || defined(PY32F003x6) || defined(PY32F003x8)
 #include "startup_py32f003.s"
-#elif defined(PY32F002Ax5) || defined(PY32F002Bx5)
+#elif defined(PY32F002Ax5)
 #include "startup_py32f002a.s"
 #else
 #error UNKNOWN CHIP

@@ -2,6 +2,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
+#if !defined(PY32F040x6) && !defined(PY32F040x8) && !defined(PY32F040x9) && !defined(PY32F040xB) && \
+    !defined(PY32F040Cx6) && !defined(PY32F040Cx8) && !defined(PY32F040Cx9) && !defined(PY32F040CxB)
 #ifdef AIRC0xx
   #include "py32c0xx_hal_i2s.c"
 #elif PY32F0xx
@@ -28,5 +30,6 @@
   #include "py32l1xx_hal_i2s.c"
 #elif AIRWLxx
   #include "py32wlxx_hal_i2s.c"
+#endif
 #endif
 #pragma GCC diagnostic pop

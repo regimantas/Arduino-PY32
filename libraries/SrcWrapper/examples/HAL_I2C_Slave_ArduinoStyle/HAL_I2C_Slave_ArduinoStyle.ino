@@ -26,21 +26,21 @@ extern "C" void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c) {
   auto* s = HalI2CSlave::instance();
   if (!s) return;
   if (hi2c->Instance != I2C1) return;
-  s->handleRxComplete_();
+  //s->handleRxComplete_();
 }
 
 extern "C" void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c) {
   auto* s = HalI2CSlave::instance();
   if (!s) return;
   if (hi2c->Instance != I2C1) return;
-  s->handleTxComplete_();
+  //s->handleTxComplete_();
 }
 
 extern "C" void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c) {
   auto* s = HalI2CSlave::instance();
   if (!s) return;
   if (hi2c->Instance != I2C1) return;
-  s->handleError_();
+  //s->handleError_();
 }
 
 void setup() {
