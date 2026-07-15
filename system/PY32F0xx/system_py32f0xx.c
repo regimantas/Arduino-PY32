@@ -107,6 +107,18 @@ const uint32_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8,
 const uint32_t APBPrescTable[8] =  {0, 0, 0, 0, 1, 2, 3, 4};
 const uint32_t HSIFreqTable[8] = {4000000U, 8000000U, 16000000U, 22120000U, 24000000U, 4000000U, 4000000U, 4000000U};
 
+#if defined(RCC_PLL_SUPPORT)
+static uint32_t RCC_GetPLLMultiplier(void)
+{
+#if defined(RCC_PLLCFGR_PLLMUL) && defined(RCC_PLLCFGR_PLLMUL_Pos)
+  return (((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL)) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U);
+#else
+  /* Some PY32F0 parts expose PLL source only; their PLL multiplier is fixed at x2. */
+  return 2U;
+#endif
+}
+#endif
+
 /**
  * @brief  Clock functions.
  * @param  none
@@ -138,11 +150,11 @@ void SystemCoreClockUpdate(void)             /* Get Core Clock Frequency      */
     if ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSI) /* HSI used as PLL clock source */
     {
       hsifs = ((READ_BIT(RCC->ICSCR, RCC_ICSCR_HSI_FS)) >> RCC_ICSCR_HSI_FS_Pos);
-      SystemCoreClock = (((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL)) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U) * (HSIFreqTable[hsifs]);
+      SystemCoreClock = RCC_GetPLLMultiplier() * (HSIFreqTable[hsifs]);
     }
     else   /* HSE used as PLL clock source */
     {
-      SystemCoreClock = (((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL)) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U) * HSE_VALUE;
+      SystemCoreClock = RCC_GetPLLMultiplier() * HSE_VALUE;
     }
     break;
 #endif /* RCC_PLL_SUPPORT */

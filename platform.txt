@@ -1,5 +1,5 @@
 ﻿name=PY32Duino
-version=0.2.55
+version=0.2.62
 
 ## compiler variables 编译器的路径
 compiler.path={runtime.tools.xpack-arm-none-eabi-gcc.path}/bin/

@@ -351,7 +351,13 @@ typedef struct
 /** @defgroup RCC_HSI_Calibration HSI Calibration
 * @{
 */
-#if defined(PY32F002APRE)
+#if defined(PY32F040PRE) || defined(PY32F040CPRE)
+#define RCC_HSICALIBRATION_4MHz        ((0x0<<13) | ((*(uint32_t *)(0x1FFF3200)) & 0x1FFF))  /*!< 4MHz HSI calibration trimming value */
+#define RCC_HSICALIBRATION_8MHz        ((0x1<<13) | ((*(uint32_t *)(0x1FFF3208)) & 0x1FFF))  /*!< 8MHz HSI calibration trimming value */
+#define RCC_HSICALIBRATION_16MHz       ((0x2<<13) | ((*(uint32_t *)(0x1FFF3210)) & 0x1FFF))  /*!< 16MHz HSI calibration trimming value */
+#define RCC_HSICALIBRATION_22p12MHz    ((0x3<<13) | ((*(uint32_t *)(0x1FFF3218)) & 0x1FFF))  /*!< 22.12MHz HSI calibration trimming value */
+#define RCC_HSICALIBRATION_24MHz       ((0x4<<13) | ((*(uint32_t *)(0x1FFF3220)) & 0x1FFF))  /*!< 24MHz HSI calibration trimming value */
+#elif defined(PY32F002APRE)
 #define RCC_HSICALIBRATION_8MHz        ((0x1<<13) | ((*(uint32_t *)(0x1FFF0F04)) & 0x1FFF))  /*!< 8MHz HSI calibration trimming value */
 #define RCC_HSICALIBRATION_24MHz       ((0x4<<13) | ((*(uint32_t *)(0x1FFF0F10)) & 0x1FFF))  /*!< 24MHz HSI calibration trimming value */
 #else

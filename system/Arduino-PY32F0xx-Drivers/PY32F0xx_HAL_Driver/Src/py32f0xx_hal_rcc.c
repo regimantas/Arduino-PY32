@@ -82,6 +82,16 @@
 #define PLLSOURCE_NONE             (0U)
 #define PLLSOURCE_FREQ_MIN         (16000000U)
 #define PLLSOURCE_FREQ_MAX         (24000000U)
+
+static uint32_t RCC_GetPLLMultiplier(void)
+{
+#if defined(RCC_PLLCFGR_PLLMUL) && defined(RCC_PLLCFGR_PLLMUL_Pos)
+  return ((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U);
+#else
+  /* Some PY32F0 parts expose PLL source only; their PLL multiplier is fixed at x2. */
+  return 2U;
+#endif
+}
 #endif
 /**
   * @}
@@ -1119,7 +1129,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
   else if (__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_PLL)
   {
     pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC);
-    pllmul = ((READ_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLMUL) >> RCC_PLLCFGR_PLLMUL_Pos) + 2U);
+    pllmul = RCC_GetPLLMultiplier();
 
     switch (pllsource)
     {

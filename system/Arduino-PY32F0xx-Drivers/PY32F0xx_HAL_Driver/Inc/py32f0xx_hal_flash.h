@@ -138,7 +138,10 @@ typedef struct
   * @{
   */
 #define FLASH_LATENCY_0                 0x00000000UL                                /*!< FLASH Zero wait state */
-#define FLASH_LATENCY_1                 FLASH_ACR_LATENCY                        /*!< FLASH One wait state */
+#define FLASH_LATENCY_1                 FLASH_ACR_LATENCY_0                         /*!< FLASH One wait state */
+#if defined(FLASH_ACR_LATENCY_1)
+#define FLASH_LATENCY_2                 FLASH_ACR_LATENCY_1                         /*!< FLASH Two wait states */
+#endif
 /**
   * @}
   */
@@ -644,8 +647,14 @@ HAL_StatusTypeDef  FLASH_WaitForLastOperation(uint32_t Timeout);
 #define IS_OB_SEC_SIZE(__VALUE__)                      ((__VALUE__) < (FLASH_PAGE_NB + 1U))
 #endif
 
+#if defined(FLASH_ACR_LATENCY_1)
+#define IS_FLASH_LATENCY(__LATENCY__)                  (((__LATENCY__) == FLASH_LATENCY_0) || \
+                                                        ((__LATENCY__) == FLASH_LATENCY_1) || \
+                                                        ((__LATENCY__) == FLASH_LATENCY_2))
+#else
 #define IS_FLASH_LATENCY(__LATENCY__)                  (((__LATENCY__) == FLASH_LATENCY_0) || \
                                                         ((__LATENCY__) == FLASH_LATENCY_1))
+#endif
 
 #define IS_WRPSTATE(__VALUE__)                         (((__VALUE__) == OB_WRPSTATE_DISABLE) || \
                                                         ((__VALUE__) == OB_WRPSTATE_ENABLE))

@@ -29,8 +29,32 @@ Currently we support the following MCUs:
 | PY32F002A    | 🔨 (in progress) |               |
 | PY32F003     | 🔨 (in progress) |               |
 | PY32F030     | 🔨 (in progress) |               |
+| PY32F040     | 🔨 (in progress) |               |
 
 For more information about development boards, please check the board-specific pages in the documentation above.
+
+## PY32F040 Serial
+
+For the generic PY32F040 board, `Serial` is USART1: TX is `PA9` and RX is `PA10`.
+Therefore `Serial.print()`, `Serial.println()` and `Serial.read()` work on these pins without
+calling `Serial.setTx()` or `Serial.setRx()`. Connect a USB-to-UART adapter as follows:
+
+| PY32F040 | USB-to-UART adapter |
+| :------- | :------------------ |
+| `PA9` (Serial TX) | RX |
+| `PA10` (Serial RX) | TX |
+| `GND` | GND |
+
+Example:
+
+```cpp
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Serial works on PA9/PA10");
+}
+```
+
+Both 72 MHz clock choices (HSI 24 MHz ×3 and HSE 24 MHz ×3) use the required two Flash wait states.
 
 
 ## Comparator (experimental)
